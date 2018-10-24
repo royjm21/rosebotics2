@@ -150,7 +150,6 @@ class ColorSensor(object):
         return self.sensor.reflected_light_intensity
 
 
-
 class InfraredForSensingProximity(ev3.InfraredSensor):
     """
     The physical Infrared Sensor can be used to measure proximity (distance)

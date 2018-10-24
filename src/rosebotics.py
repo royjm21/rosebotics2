@@ -84,8 +84,7 @@ class DriveSystem(object):
         Move for the given number of seconds at the given wheel speeds.
         Speeds are -100 to 100, where negative means moving backwards.
         """
-        self.start_moving(left_wheel_duty_cycle_percent,
-                          right_wheel_duty_cycle_percent)
+
         # For pedagogical purposes, we use a WHILE loop to keep  going for a
         # given number of seconds, instead of using the simpler alternative:
         #      time.sleep(seconds)
