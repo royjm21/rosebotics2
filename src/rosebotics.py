@@ -3,7 +3,7 @@
   for a variety of applications of the robot.  Augment as appropriate.
 
   Team # PUT_YOUR_TEAM_NUMBER_HERE.
-  Team members:  PUT_YOUR_NAMES_HERE.
+  Team members:  Susan Harmet, Jeremy Roy, and Gerardo Santana.
   Fall term, 2018-2019.
 """
 
@@ -107,6 +107,12 @@ class DriveSystem(object):
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-inches-moved.
         # TODO:   Assume that the conversion is linear with respect to speed.
+        distance = 0
+        while distance < inches:
+            self.start_moving(duty_cycle_percent, duty_cycle_percent)
+            distance += self.right_wheel.get_degrees_spun()
+        else:
+            self.stop_moving(stop_action=StopAction.BRAKE)
 
     def spin_in_place_degrees(self,
                               degrees,
@@ -118,22 +124,23 @@ class DriveSystem(object):
         where positive is clockwise and negative is counter-clockwise),
         stopping by using the given StopAction.
         """
+
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-degrees-spun.
         # TODO:   Assume that the conversion is linear with respect to speed.
-    def turn_degrees(self,
-                     degrees,
-                     duty_cycle_percent=100,
-                     stop_action=StopAction.BRAKE):
-        """
-        Turn (i.e., only one wheel moves)
-        the given number of degrees, at the given speed (-100 to 100,
-        where positive is clockwise and negative is counter-clockwise),
-        stopping by using the given StopAction.
-        """
-        # TODO: Do a few experiments to determine the constant that converts
-        # TODO:   from wheel-degrees-spun to robot-degrees-turned.
-        # TODO:   Assume that the conversion is linear with respect to speed.
+        def turn_degrees(self,
+                         degrees,
+                         duty_cycle_percent=100,
+                         stop_action=StopAction.BRAKE):
+            """
+            Turn (i.e., only one wheel moves)
+            the given number of degrees, at the given speed (-100 to 100,
+            where positive is clockwise and negative is counter-clockwise),
+            stopping by using the given StopAction.
+            """
+            # TODO: Do a few experiments to determine the constant that converts
+            # TODO:   from wheel-degrees-spun to robot-degrees-turned.
+            # TODO:   Assume that the conversion is linear with respect to speed.
 
 
 class ArmAndClaw(object):
@@ -141,7 +148,6 @@ class ArmAndClaw(object):
         self.motor = ev3.MediumMotor(port)
         self.touch_sensor = touch_sensor
         self.calibrate()  # Sets the motor's position to 0 at the DOWN position.
-
 
     def calibrate(self):
         """
@@ -231,12 +237,14 @@ class ColorSensor(rb.ColorSensor):
 
 class InfraredSensorAsProximitySensor(object):
     """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
+
     def __init__(self, port=ev3.INPUT_4):
         super().__init__(port)
 
 
 class InfraredSensorAsBeaconSensor(object):
     """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
+
 
 class InfraredSensorAsBeaconButtonSensor(object):
     """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
