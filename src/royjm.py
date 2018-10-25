@@ -9,7 +9,7 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
-    # run_test_spin_in_place_degrees()
+    run_test_spin_in_place_degrees()
 
 
 def spin_in_place_degrees(self,
@@ -26,8 +26,12 @@ def spin_in_place_degrees(self,
         # TODO:   from wheel-degrees-spun to robot-degrees-spun.
         # TODO:   Assume that the conversion is linear with respect to speed.
         robot = rb.Snatch3rRobot()
-        robot.drive_system.left_wheel.start_moving(degrees)
-        robot.drive_system.right_wheel.start_moving(-degrees)
+        robot.drive_system.left_wheel.start_moving(duty_cycle_percent)
+        robot.drive_system.right_wheel.start_moving(-duty_cycle_percent)
+        while True:
+            if robot.drive_system.left_wheel.get_degrees_spun() > degrees:
+                break
+
 
 def run_test_spin_in_place_degrees():
     print('90 degree turn')
