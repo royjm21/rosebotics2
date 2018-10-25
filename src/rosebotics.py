@@ -110,7 +110,8 @@ class DriveSystem(object):
         distance = 0
         while distance < inches:
             self.start_moving(duty_cycle_percent, duty_cycle_percent)
-            distance += self.right_wheel.get_degrees_spun()
+            distance += self.right_wheel.get_degrees_spun() / 100  # Do this to get the distance because 100 degrees
+            # is 1 inch in distance
         else:
             self.stop_moving(stop_action=StopAction.BRAKE)
 
@@ -195,18 +196,25 @@ class ArmAndClaw(object):
 
 
 class TouchSensor(rb.TouchSensor):
-    """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
+    """ Primary author of this class:  Susan Harmet. """
 
     def __init__(self, port=ev3.INPUT_1):
         super().__init__(port)
 
     def wait_until_pressed(self):
         """ Waits (doing nothing new) until the touch sensor is pressed. """
-        # TODO.
+        # DONE.
+        while True:
+            if self.get_value() == 1:
+                break
 
     def wait_until_released(self):
         """ Waits (doing nothing new) until the touch sensor is released. """
         # TODO
+        self.wait_until_pressed()
+        while True:
+            if self.get_value() == 0:
+                break
 
 
 class Camera(object):
