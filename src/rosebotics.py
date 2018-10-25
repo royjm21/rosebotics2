@@ -141,6 +141,14 @@ class DriveSystem(object):
             # TODO: Do a few experiments to determine the constant that converts
             # TODO:   from wheel-degrees-spun to robot-degrees-turned.
             # TODO:   Assume that the conversion is linear with respect to speed.
+            self.left_wheel.start_spinning(duty_cycle_percent)
+            self.left_wheel.stop_spinning(stop_action)
+
+            self.right_wheel.start_spinning(duty_cycle_percent)
+            self.right_wheel.stop_spinning(stop_action)
+
+            #if turn, counter clock wise is right wheel
+
 
 
 class ArmAndClaw(object):
@@ -197,7 +205,7 @@ class Camera(object):
 
 
 class ColorSensor(rb.ColorSensor):
-    """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
+    """ Primary author of this class:  Gerardo Santana. """
 
     def __init__(self, port=ev3.INPUT_3):
         super().__init__(port)
@@ -208,6 +216,9 @@ class ColorSensor(rb.ColorSensor):
         light intensity is less than the given value (threshold), which should
         be between 0 (no light reflected) and 100 (maximum light reflected).
         """
+        if ColorSensor.get_reflected_intensity() > reflected_light_intensity:
+            self.wait_until_intensity_is_less_than(reflected_light_intensity)
+
         # TODO.
 
     def wait_until_intensity_is_greater_than(self, reflected_light_intensity):
@@ -216,6 +227,8 @@ class ColorSensor(rb.ColorSensor):
         light intensity is greater than the given value (threshold), which
         should be between 0 (no light reflected) and 100 (max light reflected).
         """
+        if ColorSensor.get_reflected_intensity() < reflected_light_intensity:
+            self.wait_until_intensity_is_greater_than(reflected_light_intensity)
         # TODO.
 
     def wait_until_color_is(self, color):
