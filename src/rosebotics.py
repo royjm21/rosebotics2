@@ -205,6 +205,9 @@ class ArmAndClaw(object):
         Stop when the touch sensor is pressed.
         """
         # TODO
+        if self.touch_sensor() == 0:
+        if self.touch_sensor() == 1:
+            self.motor.stop()
 
     def lower_arm_and_open_claw(self):
         """
@@ -212,11 +215,17 @@ class ArmAndClaw(object):
         Stop when the touch sensor is pressed.
         """
         # TODO
+        self.motor.COMMAND_RUN_TO_REL_POS
+        if self.touch_sensor() == 1:
+            self.motor.stop()
 
     def move_arm_to_position(self, position):
         """ Spin the arm's motor until it reaches the given position. """
         # TODO
-
+        count = 0
+        while position > count:
+            self.motor.COMMAND_RUN_DIRECT
+            count += self.motor.position
 
 class TouchSensor(rb.TouchSensor):
     """ Primary author of this class:  Susan Harmet. """
