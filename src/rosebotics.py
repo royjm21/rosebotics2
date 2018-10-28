@@ -152,14 +152,12 @@ class DriveSystem(object):
             # TODO:   from wheel-degrees-spun to robot-degrees-turned.
             # TODO:   Assume that the conversion is linear with respect to speed.
             self.left_wheel.start_spinning(duty_cycle_percent)
-            self.left_wheel.stop_spinning(stop_action)
-
-            self.right_wheel.start_spinning(duty_cycle_percent)
-            self.right_wheel.stop_spinning(stop_action)
-
-            #if turn, counter clock wise is right wheel
-
-
+        #if turn, counter clock wise is right wheel
+            while True:
+                if self.right_wheel.get_degrees_spun() > degrees:
+                    self.right_wheel.stop_spinning(stop_action)
+                    break
+                
 
 class ArmAndClaw(object):
     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
