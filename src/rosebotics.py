@@ -139,6 +139,26 @@ class DriveSystem(object):
                 break
 
     def turn_degrees(self,
+                     degrees,
+                     duty_cycle_percent=100,
+                     stop_action=StopAction.BRAKE):
+        """
+        Turn (i.e., only one wheel moves)
+        the given number of degrees, at the given speed (-100 to 100,
+        where positive is clockwise and negative is counter-clockwise),
+        stopping by using the given StopAction.
+        """
+        # TODO: Do a few experiments to determine the constant that converts
+        # TODO:   from wheel-degrees-spun to robot-degrees-turned.
+        # TODO:   Assume that the conversion is linear with respect to speed.
+        self.left_wheel.start_spinning(duty_cycle_percent)
+        self.left_wheel.stop_spinning(stop_action)
+
+        self.right_wheel.start_spinning(duty_cycle_percent)
+        self.right_wheel.stop_spinning(stop_action)
+
+        # if turn, counter clock wise is right wheel
+
                          degrees,
                          duty_cycle_percent=100,
                          stop_action=StopAction.BRAKE):
@@ -157,7 +177,7 @@ class DriveSystem(object):
                 if self.right_wheel.get_degrees_spun() > degrees:
                     self.right_wheel.stop_spinning(stop_action)
                     break
-                
+
 
 class ArmAndClaw(object):
     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
@@ -173,6 +193,11 @@ class ArmAndClaw(object):
         (Hence, 0 means all the way DOWN and XXX means all the way UP).
         """
         # TODO
+        if self.touch_sensor() == 0:
+            self.motor.stop() #need to figure out how to call the arm as a method
+        if self.touch_sensor() == 1:
+            self.lower_arm_and_open_claw()
+            self.motor.position = 0
 
     def raise_arm_and_close_claw(self):
         """
@@ -208,7 +233,7 @@ class TouchSensor(rb.TouchSensor):
 
     def wait_until_released(self):
         """ Waits (doing nothing new) until the touch sensor is released. """
-        # TODO
+        # DONE
         self.wait_until_pressed()
         while True:
             if self.get_value() == 0:
