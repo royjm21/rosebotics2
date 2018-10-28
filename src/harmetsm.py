@@ -41,6 +41,19 @@ def test_wait_until_released():
     print('Sensor released')
 
 
+def test_calibrated():
+    print('test if calibrated')
+    robot = rb.Snatch3rRobot()
+    robot.arm.calibrate(12)
+    print('Arm calibrated')
+
+
+def test_raise_arm_and_close_claw():
+    print("testing raise arm and close claw")
+    robot = rb.Snatch3rRobot()
+    robot.arm.raise_arm_and_close_claw(11)
+
+def test_
 ############################################
 ############################################
 main()

@@ -44,11 +44,11 @@ class Snatch3rRobot(object):
         # All the methods in this class "delegate" their work to the appropriate
         # subsystem:  drive_system, touch_sensor, camera, olor_sensor, etc.
         self.drive_system = DriveSystem(left_wheel_port, right_wheel_port)
-        # self.arm = ArmAndClaw(arm_port)
+        self.arm = ArmAndClaw(arm_port)
         self.touch_sensor = TouchSensor(touch_sensor_port)
-        # self.camera = Camera(camera_port)
+        self.camera = Camera(camera_port)
         self.color_sensor = ColorSensor(color_sensor_port)
-        # self.infrared_sensor = InfraredSensor(infrared_sensor_port)
+        self.infrared_sensor = InfraredSensor(infrared_sensor_port)
 
 
 class DriveSystem(object):
@@ -185,7 +185,7 @@ class ArmAndClaw(object):
         self.touch_sensor = touch_sensor
         self.calibrate()  # Sets the motor's position to 0 at the DOWN position.
 
-    def calibrate(self):
+    def calibrate(self, units):
         """
         Raise the arm to until the touch sensor is pressed.
         Then lower the arm XXX units.
@@ -196,18 +196,19 @@ class ArmAndClaw(object):
         if self.touch_sensor() == 0:
             self.motor.stop() #need to figure out how to call the arm as a method
         if self.touch_sensor() == 1:
-            self.lower_arm_and_open_claw()
+            self.move_arm_to_position(units)
             self.motor.position = 0
 
-    def raise_arm_and_close_claw(self):
+    def raise_arm_and_close_claw(self, distance):
         """
         Raise the arm (and hence close the claw).
         Stop when the touch sensor is pressed.
         """
         # TODO
         if self.touch_sensor() == 0:
+            self.move_arm_to_position(distance)
         if self.touch_sensor() == 1:
-            self.motor.stop()
+            self.motor.stop_action()
 
     def lower_arm_and_open_claw(self):
         """
