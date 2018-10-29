@@ -19,10 +19,11 @@ def test_go_straight_inches():
 
     print('Test 1')
     robot = rb.Snatch3rRobot()  # to construct a dog doq = Dog(), WAS MISSING PARENTHESES
-
+    time.time()
     print('Testing with 12 inches')
-    while time.time() < 10:
-        robot.drive_system.start_moving()
+    robot.drive_system.start_moving(20, 20)
+    time.time()
+    robot.drive_system.stop_moving()
 
 
 def test_wait_until_pressed():
@@ -53,6 +54,7 @@ def test_raise_arm_and_close_claw():
     print("testing raise arm and close claw")
     robot = rb.Snatch3rRobot()
     robot.arm.raise_arm_and_close_claw(11)
+
 
 ############################################
 ############################################
