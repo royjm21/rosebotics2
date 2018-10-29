@@ -18,13 +18,12 @@ def run_tests():
     """ Runs various tests. """
     # run_test_drive_system()
     # run_test_touch_sensor()
-    # run_test_color_sensor()
+    run_test_color_sensor()
 
 
 def run_test_drive_system():
     """ Tests the  drive_system  of the Snatch3rRobot. """
     robot = rb.Snatch3rRobot()
-
     print()
     print("Testing the  drive_system  of the robot.")
     print("Move at (20, 50) - that is, veer left slowly")

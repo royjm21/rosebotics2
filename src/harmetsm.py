@@ -25,6 +25,12 @@ def test_go_straight_inches():
     print('Testing complete')
 
 
+def test_follow_the_black_line():
+    print('testing follow the black line')
+    robot = rb.Snatch3rRobot()
+    robot.drive_system.follow_the_black_line()
+
+
 def test_wait_until_pressed():
     print('Testing wait_until_pressed')
     print('Test 1')
@@ -42,17 +48,17 @@ def test_wait_until_released():
     print('Sensor released')
 
 
-def test_calibrated():
-    print('test if calibrated')
-    robot = rb.Snatch3rRobot()
-    robot.arm.calibrate(12)
-    print('Arm calibrated')
+# def test_calibrated():
+#     print('test if calibrated')
+#     robot = rb.Snatch3rRobot()
+#     robot.calibrate(12)
+#     print('Arm calibrated')
 
-
-def test_raise_arm_and_close_claw():
-    print("testing raise arm and close claw")
-    robot = rb.Snatch3rRobot()
-    robot.arm.raise_arm_and_close_claw(11)
+#
+# def test_raise_arm_and_close_claw():
+#     print("testing raise arm and close claw")
+#     robot = rb.Snatch3rRobot()
+#     robot.arm.raise_arm_and_close_claw(11)
 
 
 ############################################

@@ -176,6 +176,9 @@ class DriveSystem(object):
         #             self.right_wheel.stop_spinning(stop_action)
         #             break
 
+    def follow_the_black_line(self):
+        self.start_moving()
+        self.
 
 class ArmAndClaw(object):
     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
