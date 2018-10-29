@@ -10,8 +10,8 @@ import time
 def main():
     """ Runs YOUR specific part of the project """
     test_go_straight_inches()
-    test_wait_until_pressed()
-    test_wait_until_released()
+    # test_wait_until_pressed()
+    # test_wait_until_released()
 
 
 def test_go_straight_inches():
@@ -53,7 +53,6 @@ def test_raise_arm_and_close_claw():
     robot = rb.Snatch3rRobot()
     robot.arm.raise_arm_and_close_claw(11)
 
-def test_
 ############################################
 ############################################
 main()

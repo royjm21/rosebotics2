@@ -111,6 +111,7 @@ class DriveSystem(object):
         while distance < inches:
             self.start_moving(duty_cycle_percent, duty_cycle_percent)
             distance += self.right_wheel.get_degrees_spun() / 100  # Do this to get the distance because 100 degrees
+            return distance
             # is 1 inch in distance
         else:
             self.stop_moving(stop_action=StopAction.BRAKE)
