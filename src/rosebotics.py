@@ -137,44 +137,29 @@ class DriveSystem(object):
                 break
 
     def turn_degrees(self,
-                     degrees,
-                     duty_cycle_percent=100,
-                     stop_action=StopAction.BRAKE):
-        """
-        Turn (i.e., only one wheel moves)
-        the given number of degrees, at the given speed (-100 to 100,
-        where positive is clockwise and negative is counter-clockwise),
-        stopping by using the given StopAction.
-        """
-        # TODO: Do a few experiments to determine the constant that converts
-        # TODO:   from wheel-degrees-spun to robot-degrees-turned.
-        # TODO:   Assume that the conversion is linear with respect to speed.
-        self.left_wheel.start_spinning(duty_cycle_percent)
-        self.left_wheel.stop_spinning(stop_action)
-
-        self.right_wheel.start_spinning(duty_cycle_percent)
-        self.right_wheel.stop_spinning(stop_action)
-
+                         degrees,
+                         duty_cycle_percent=100,
+                         stop_action=StopAction.BRAKE):
+            """
+            Turn (i.e., only one wheel moves)
+            the given number of degrees, at the given speed (-100 to 100,
+            where positive is clockwise and negative is counter-clockwise),
+            stopping by using the given StopAction.
+            """
+            # TODO: Do a few experiments to determine the constant that converts
+            # TODO:   from wheel-degrees-spun to robot-degrees-turned.
+            # TODO:   Assume that the conversion is linear with respect to speed.
+            self.left_wheel.start_spinning(duty_cycle_percent)
         # if turn, counter clock wise is right wheel
-        #
-        #                  degrees,
-        #                  duty_cycle_percent=100,
-        #                  stop_action=StopAction.BRAKE):
-        #     """
-        #     Turn (i.e., only one wheel moves)
-        #     the given number of degrees, at the given speed (-100 to 100,
-        #     where positive is clockwise and negative is counter-clockwise),
-        #     stopping by using the given StopAction.
-        #     """
-        #     # TODO: Do a few experiments to determine the constant that converts
-        #     # TODO:   from wheel-degrees-spun to robot-degrees-turned.
-        #     # TODO:   Assume that the conversion is linear with respect to speed.
-        #     self.left_wheel.start_spinning(duty_cycle_percent)
-        # #if turn, counter clock wise is right wheel
-        #     while True:
-        #         if self.right_wheel.get_degrees_spun() > degrees:
-        #             self.right_wheel.stop_spinning(stop_action)
-        #             break
+            while True:
+                if self.right_wheel.get_degrees_spun() > degrees:
+                    self.right_wheel.stop_spinning(stop_action)
+                    break
+
+    def polygon(self, sides, length):
+        for k in range(sides):
+            self.go_straight_inches(length)
+            self.turn_degrees((180 - (sides - 2) / 180) * 1.2)
 
     def follow_the_black_line(self):
         self.start_moving()
@@ -193,14 +178,9 @@ class ArmAndClaw(object):
         Set the motor's position to 0 at that point.
         (Hence, 0 means all the way DOWN and XXX means all the way UP).
         """
-        # # TODO
-        # if self.touch_sensor() == 0:
-        #     self.motor.stop()  # need to figure out how to call the arm as a method
-        # if self.touch_sensor() == 1:
-        #     self.move_arm_to_position(units)
-        #     self.motor.position = 0
+        # TODO
 
-    def raise_arm_and_close_claw(self, distance):
+    def raise_arm_and_close_claw(self):
         """
         Raise the arm (and hence close the claw).
         Stop when the touch sensor is pressed.
@@ -245,7 +225,7 @@ class TouchSensor(rb.TouchSensor):
 
     def wait_until_released(self):
         """ Waits (doing nothing new) until the touch sensor is released. """
-        # DONE
+        # TODO
         self.wait_until_pressed()
         while True:
             if self.get_value() == 0:
@@ -269,8 +249,8 @@ class ColorSensor(rb.ColorSensor):
         be between 0 (no light reflected) and 100 (maximum light reflected).
         """
         while True:
-            if self.get_reflected_intensity() > reflected_light_intensity:
-                self.wait_until_intensity_is_less_than(reflected_light_intensity)
+            if self.get_reflected_intensity() <= reflected_light_intensity:
+                break
 
         # Done.
 
@@ -281,8 +261,8 @@ class ColorSensor(rb.ColorSensor):
         should be between 0 (no light reflected) and 100 (max light reflected).
         """
         while True:
-            if self.get_reflected_intensity() < reflected_light_intensity:
-                self.wait_until_intensity_is_greater_than(reflected_light_intensity)
+            if self.get_reflected_intensity() >= reflected_light_intensity:
+                break
         # Done.
 
     def wait_until_color_is(self, color):
@@ -293,7 +273,7 @@ class ColorSensor(rb.ColorSensor):
         """
         while True:
             if self.get_color() != color:
-                self.wait_until_color_is(self.get_color())
+                break
         # Done.
 
     def wait_until_color_is_one_of(self, colors):
@@ -304,7 +284,12 @@ class ColorSensor(rb.ColorSensor):
         """
         for k in range(len(colors)):
             if self.get_color() != colors[k]:
-                self.wait_until_color_is(colors[k])
+                break
+
+    def drive_until_color(self, color):
+        while True:
+            if self.get_color() == color:
+                break
 
         # Done.
 
