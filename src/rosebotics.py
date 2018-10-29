@@ -240,8 +240,9 @@ class ColorSensor(rb.ColorSensor):
         light intensity is less than the given value (threshold), which should
         be between 0 (no light reflected) and 100 (maximum light reflected).
         """
-        if self.get_reflected_intensity() > reflected_light_intensity:
-            self.wait_until_intensity_is_less_than(reflected_light_intensity)
+        while True:
+            if self.get_reflected_intensity() > reflected_light_intensity:
+                self.wait_until_intensity_is_less_than(reflected_light_intensity)
 
         # Done.
 
@@ -251,8 +252,9 @@ class ColorSensor(rb.ColorSensor):
         light intensity is greater than the given value (threshold), which
         should be between 0 (no light reflected) and 100 (max light reflected).
         """
-        if self.get_reflected_intensity() < reflected_light_intensity:
-            self.wait_until_intensity_is_greater_than(reflected_light_intensity)
+        while True:
+            if self.get_reflected_intensity() < reflected_light_intensity:
+                self.wait_until_intensity_is_greater_than(reflected_light_intensity)
         # Done.
 
     def wait_until_color_is(self, color):
@@ -261,8 +263,9 @@ class ColorSensor(rb.ColorSensor):
         of what color it sees is the given color.
         The given color must be a Color (as defined above).
         """
-        if self.get_color() != color:
-            self.wait_until_color_is(self.get_color())
+        while True:
+            if self.get_color() != color:
+                self.wait_until_color_is(self.get_color())
         # Done.
 
     def wait_until_color_is_one_of(self, colors):
