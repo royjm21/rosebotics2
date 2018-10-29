@@ -92,7 +92,7 @@ class DriveSystem(object):
         self.start_moving(left_wheel_duty_cycle_percent,
                           right_wheel_duty_cycle_percent)
         start_time = time.time()
-        while True: 
+        while True:
             if time.time() - start_time > seconds:
                 self.stop_moving(stop_action)
                 break
