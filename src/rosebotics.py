@@ -92,7 +92,7 @@ class DriveSystem(object):
         self.start_moving(left_wheel_duty_cycle_percent,
                           right_wheel_duty_cycle_percent)
         start_time = time.time()
-        while True:
+        while True: 
             if time.time() - start_time > seconds:
                 self.stop_moving(stop_action)
                 break
@@ -108,13 +108,10 @@ class DriveSystem(object):
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-inches-moved.
         # TODO:   Assume that the conversion is linear with respect to speed.
-        while self.distance < inches:
-            self.start_moving(duty_cycle_percent, duty_cycle_percent)
-            self.distance += self.right_wheel.get_degrees_spun() / 100  # Do this to get the distance because 100 degrees
-            return self.distance
-            # is 1 inch in distance
-        else:
-            self.stop_moving(stop_action=StopAction.BRAKE)
+        self.start_moving(duty_cycle_percent)
+        while True:
+            if self.left_wheel.get_degrees_spun() >= inches * 87:
+                self.stop_moving(stop_action)
 
     def spin_in_place_degrees(self,
                               degrees,
