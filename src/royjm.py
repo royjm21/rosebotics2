@@ -62,8 +62,15 @@ def run_test_turn_degrees():
 
 
 def run_test_polygon():
-    robot = rb.Snatch3rRobot
-    print('octogon with 2inch sides')
-    robot.drive_system.pol
+    robot = rb.Snatch3rRobot()
+    print('octagon with 2inch sides')
+    robot.drive_system.polygon(8, 2)
+    print('triangle with 3 inch sides')
+    robot.drive_system.polygon(3, 3)
+    print('square with 2 inch sides')
+    robot.drive_system.polygon(4, 2)
+    print('pentagon with 6 inch sides')
+    robot.drive_system.polygon(5, 6)
+
 
 main()

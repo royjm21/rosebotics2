@@ -155,7 +155,7 @@ class DriveSystem(object):
                 if self.right_wheel.get_degrees_spun() > degrees:
                     self.right_wheel.stop_spinning(stop_action)
                     break
-                
+
     def polygon(self, sides, length):
         for k in range(sides):
             self.go_straight_inches(length)
