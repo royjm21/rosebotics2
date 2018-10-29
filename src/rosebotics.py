@@ -184,7 +184,7 @@ class ArmAndClaw(object):
     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
         self.motor = ev3.MediumMotor(port)
         self.touch_sensor = touch_sensor
-        self.calibrate()  # Sets the motor's position to 0 at the DOWN position.
+        # Sets the motor's position to 0 at the DOWN position.
 
     def calibrate(self, units):
         """
