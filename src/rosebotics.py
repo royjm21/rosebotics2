@@ -62,6 +62,7 @@ class DriveSystem(object):
                  right_wheel_port=ev3.OUTPUT_C):
         self.left_wheel = rb.Wheel(left_wheel_port)
         self.right_wheel = rb.Wheel(right_wheel_port)
+        self.distance = 0
 
     def start_moving(self,
                      left_wheel_duty_cycle_percent=100,
@@ -107,11 +108,10 @@ class DriveSystem(object):
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-inches-moved.
         # TODO:   Assume that the conversion is linear with respect to speed.
-        distance = 0
-        while distance < inches:
+        while self.distance < inches:
             self.start_moving(duty_cycle_percent, duty_cycle_percent)
-            distance += self.right_wheel.get_degrees_spun() / 100  # Do this to get the distance because 100 degrees
-            return distance
+            self.distance += self.right_wheel.get_degrees_spun() / 100  # Do this to get the distance because 100 degrees
+            return self.distance
             # is 1 inch in distance
         else:
             self.stop_moving(stop_action=StopAction.BRAKE)
@@ -159,25 +159,25 @@ class DriveSystem(object):
         self.right_wheel.stop_spinning(stop_action)
 
         # if turn, counter clock wise is right wheel
-
-                         degrees,
-                         duty_cycle_percent=100,
-                         stop_action=StopAction.BRAKE):
-            """
-            Turn (i.e., only one wheel moves)
-            the given number of degrees, at the given speed (-100 to 100,
-            where positive is clockwise and negative is counter-clockwise),
-            stopping by using the given StopAction.
-            """
-            # TODO: Do a few experiments to determine the constant that converts
-            # TODO:   from wheel-degrees-spun to robot-degrees-turned.
-            # TODO:   Assume that the conversion is linear with respect to speed.
-            self.left_wheel.start_spinning(duty_cycle_percent)
-        #if turn, counter clock wise is right wheel
-            while True:
-                if self.right_wheel.get_degrees_spun() > degrees:
-                    self.right_wheel.stop_spinning(stop_action)
-                    break
+        #
+        #                  degrees,
+        #                  duty_cycle_percent=100,
+        #                  stop_action=StopAction.BRAKE):
+        #     """
+        #     Turn (i.e., only one wheel moves)
+        #     the given number of degrees, at the given speed (-100 to 100,
+        #     where positive is clockwise and negative is counter-clockwise),
+        #     stopping by using the given StopAction.
+        #     """
+        #     # TODO: Do a few experiments to determine the constant that converts
+        #     # TODO:   from wheel-degrees-spun to robot-degrees-turned.
+        #     # TODO:   Assume that the conversion is linear with respect to speed.
+        #     self.left_wheel.start_spinning(duty_cycle_percent)
+        # #if turn, counter clock wise is right wheel
+        #     while True:
+        #         if self.right_wheel.get_degrees_spun() > degrees:
+        #             self.right_wheel.stop_spinning(stop_action)
+        #             break
 
 
 class ArmAndClaw(object):
@@ -193,41 +193,42 @@ class ArmAndClaw(object):
         Set the motor's position to 0 at that point.
         (Hence, 0 means all the way DOWN and XXX means all the way UP).
         """
-        # TODO
-        if self.touch_sensor() == 0:
-            self.motor.stop() #need to figure out how to call the arm as a method
-        if self.touch_sensor() == 1:
-            self.move_arm_to_position(units)
-            self.motor.position = 0
+        # # TODO
+        # if self.touch_sensor() == 0:
+        #     self.motor.stop()  # need to figure out how to call the arm as a method
+        # if self.touch_sensor() == 1:
+        #     self.move_arm_to_position(units)
+        #     self.motor.position = 0
 
     def raise_arm_and_close_claw(self, distance):
         """
         Raise the arm (and hence close the claw).
         Stop when the touch sensor is pressed.
         """
-        # TODO
-        if self.touch_sensor() == 0:
-            self.move_arm_to_position(distance)
-        if self.touch_sensor() == 1:
-            self.motor.stop_action()
+        # # TODO
+        # if self.touch_sensor() == 0:
+        #     self.move_arm_to_position(distance)
+        # if self.touch_sensor() == 1:
+        #     self.motor.stop_action()
 
     def lower_arm_and_open_claw(self):
         """
         Raise the arm (and hence close the claw).
         Stop when the touch sensor is pressed.
         """
-        # TODO
-        self.motor.COMMAND_RUN_TO_REL_POS
-        if self.touch_sensor() == 1:
-            self.motor.stop()
+        # # TODO
+        # self.motor.COMMAND_RUN_TO_REL_POS
+        # if self.touch_sensor() == 1:
+        #     self.motor.stop()
 
     def move_arm_to_position(self, position):
         """ Spin the arm's motor until it reaches the given position. """
         # TODO
-        count = 0
-        while position > count:
-            self.motor.COMMAND_RUN_DIRECT
-            count += self.motor.position
+        # count = 0
+        # while position > count:
+        #     self.motor.COMMAND_RUN_DIRECT
+        #     count += self.motor.position
+
 
 class TouchSensor(rb.TouchSensor):
     """ Primary author of this class:  Susan Harmet. """
