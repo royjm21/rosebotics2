@@ -246,8 +246,8 @@ class ColorSensor(rb.ColorSensor):
         be between 0 (no light reflected) and 100 (maximum light reflected).
         """
         while True:
-            if self.get_reflected_intensity() > reflected_light_intensity:
-                self.wait_until_intensity_is_less_than(reflected_light_intensity)
+            if self.get_reflected_intensity() <= reflected_light_intensity:
+                break
 
         # Done.
 
@@ -258,8 +258,8 @@ class ColorSensor(rb.ColorSensor):
         should be between 0 (no light reflected) and 100 (max light reflected).
         """
         while True:
-            if self.get_reflected_intensity() < reflected_light_intensity:
-                self.wait_until_intensity_is_greater_than(reflected_light_intensity)
+            if self.get_reflected_intensity() >= reflected_light_intensity:
+                break
         # Done.
 
     def wait_until_color_is(self, color):
@@ -270,7 +270,7 @@ class ColorSensor(rb.ColorSensor):
         """
         while True:
             if self.get_color() != color:
-                self.wait_until_color_is(self.get_color())
+                break
         # Done.
 
     def wait_until_color_is_one_of(self, colors):
@@ -281,7 +281,12 @@ class ColorSensor(rb.ColorSensor):
         """
         for k in range(len(colors)):
             if self.get_color() != colors[k]:
-                self.wait_until_color_is(colors[k])
+                break
+
+    def drive_until_color(self, color):
+        while True:
+            if self.get_color() == color:
+                break
 
         # Done.
 
