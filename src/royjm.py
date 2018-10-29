@@ -37,7 +37,7 @@ def spin_in_place_degrees(self,
 def run_test_spin_in_place_degrees():
     robot = rb.Snatch3rRobot()
     print('45 degree turn')
-    robot.drive_system.spin_in_place_degrees(300)
+    robot.drive_system.spin_in_place_degrees(460)
     time.sleep(5)
     print('90 degree turn')
     robot.drive_system.spin_in_place_degrees(930)
@@ -47,5 +47,11 @@ def run_test_spin_in_place_degrees():
     time.sleep(5)
     print('360 degree turn')
     robot.drive_system.spin_in_place_degrees(3660)
+
+
+def polygon(sides, length):
+    for k in range(sides):
+        go_straight_inches(length)
+        turn degrees((180-(sides-2)/180)*1.2)
 
 main()

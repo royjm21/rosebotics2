@@ -154,10 +154,13 @@ class DriveSystem(object):
             self.left_wheel.start_spinning(duty_cycle_percent)
         #if turn, counter clock wise is right wheel
             while True:
-                if self.right_wheel.get_degrees_spun() > degrees:
+                if self.right_wheel.get_degrees_spun() > degrees * 1.2:
                     self.right_wheel.stop_spinning(stop_action)
                     break
-                
+
+    def polygon(self, sides, length):
+        for k in range(sides):
+            go_straight_inches(length)
 
 class ArmAndClaw(object):
     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
