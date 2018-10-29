@@ -44,11 +44,11 @@ class Snatch3rRobot(object):
         # All the methods in this class "delegate" their work to the appropriate
         # subsystem:  drive_system, touch_sensor, camera, olor_sensor, etc.
         self.drive_system = DriveSystem(left_wheel_port, right_wheel_port)
-        self.arm = ArmAndClaw(arm_port)
+        # self.arm = ArmAndClaw(arm_port)
         self.touch_sensor = TouchSensor(touch_sensor_port)
-        self.camera = Camera(camera_port)
+        # self.camera = Camera(camera_port)
         self.color_sensor = ColorSensor(color_sensor_port)
-        self.infrared_sensor = InfraredSensor(infrared_sensor_port)
+        # self.infrared_sensor = InfraredSensor(infrared_sensor_port)
 
 
 class DriveSystem(object):
