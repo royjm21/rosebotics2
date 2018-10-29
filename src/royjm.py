@@ -37,21 +37,33 @@ def spin_in_place_degrees(self,
 def run_test_spin_in_place_degrees():
     robot = rb.Snatch3rRobot()
     print('45 degree turn')
-    robot.drive_system.spin_in_place_degrees(460)
+    robot.drive_system.spin_in_place_degrees(45 * 11)
     time.sleep(5)
     print('90 degree turn')
-    robot.drive_system.spin_in_place_degrees(930)
+    robot.drive_system.spin_in_place_degrees(90 * 11)
     time.sleep(5)
     print('180 degree turn')
-    robot.drive_system.spin_in_place_degrees(1860)
+    robot.drive_system.spin_in_place_degrees(180 * 11)
     time.sleep(5)
     print('360 degree turn')
-    robot.drive_system.spin_in_place_degrees(3660)
+    robot.drive_system.spin_in_place_degrees(3630)
 
 
-def polygon(sides, length):
-    for k in range(sides):
-        go_straight_inches(length)
-        turn degrees((180-(sides-2)/180)*1.2)
+def run_test_turn_degrees():
+    robot = rb.Snatch3rRobot()
+    print('45 degree turn')
+    robot.drive_system.turn_degrees(45 * 11)
+    print('90 degree turn')
+    robot.drive_system.turn_degrees(90 * 11)
+    print('180 degree turn')
+    robot.drive_system.turn_degrees(180 * 11)
+    print('360 degree turn')
+    robot.drive_system.turn_degrees(360 * 11)
+
+
+def run_test_polygon():
+    robot = rb.Snatch3rRobot
+    print('octogon with 2inch sides')
+    robot.drive_system.pol
 
 main()
