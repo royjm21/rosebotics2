@@ -62,6 +62,7 @@ class DriveSystem(object):
                  right_wheel_port=ev3.OUTPUT_C):
         self.left_wheel = rb.Wheel(left_wheel_port)
         self.right_wheel = rb.Wheel(right_wheel_port)
+        self.distance = 0
 
     def start_moving(self,
                      left_wheel_duty_cycle_percent=100,
@@ -107,13 +108,10 @@ class DriveSystem(object):
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-inches-moved.
         # TODO:   Assume that the conversion is linear with respect to speed.
-        distance = 0
-        while distance < inches:
-            self.start_moving(duty_cycle_percent, duty_cycle_percent)
-            distance += self.right_wheel.get_degrees_spun() / 100  # Do this to get the distance because 100 degrees
-            # is 1 inch in distance
-        else:
-            self.stop_moving(stop_action=StopAction.BRAKE)
+        self.start_moving(duty_cycle_percent)
+        while True:
+            if self.left_wheel.get_degrees_spun() >= inches * 87:
+                self.stop_moving(stop_action)
 
     def spin_in_place_degrees(self,
                               degrees,
@@ -154,21 +152,18 @@ class DriveSystem(object):
             self.left_wheel.start_spinning(duty_cycle_percent)
         #if turn, counter clock wise is right wheel
             while True:
-                if self.right_wheel.get_degrees_spun() > degrees * 1.2:
+                if self.right_wheel.get_degrees_spun() > degrees:
                     self.right_wheel.stop_spinning(stop_action)
                     break
-
-    def polygon(self, sides, length):
-        for k in range(sides):
-            go_straight_inches(length)
+                
 
 class ArmAndClaw(object):
     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
         self.motor = ev3.MediumMotor(port)
         self.touch_sensor = touch_sensor
-        self.calibrate()  # Sets the motor's position to 0 at the DOWN position.
+        # Sets the motor's position to 0 at the DOWN position.
 
-    def calibrate(self):
+    def calibrate(self, units):
         """
         Raise the arm to until the touch sensor is pressed.
         Then lower the arm XXX units.
@@ -182,18 +177,29 @@ class ArmAndClaw(object):
         Raise the arm (and hence close the claw).
         Stop when the touch sensor is pressed.
         """
-        # TODO
+        # # TODO
+        # if self.touch_sensor() == 0:
+        #     self.move_arm_to_position(distance)
+        # if self.touch_sensor() == 1:
+        #     self.motor.stop_action()
 
     def lower_arm_and_open_claw(self):
         """
         Raise the arm (and hence close the claw).
         Stop when the touch sensor is pressed.
         """
-        # TODO
+        # # TODO
+        # self.motor.COMMAND_RUN_TO_REL_POS
+        # if self.touch_sensor() == 1:
+        #     self.motor.stop()
 
     def move_arm_to_position(self, position):
         """ Spin the arm's motor until it reaches the given position. """
         # TODO
+        # count = 0
+        # while position > count:
+        #     self.motor.COMMAND_RUN_DIRECT
+        #     count += self.motor.position
 
 
 class TouchSensor(rb.TouchSensor):

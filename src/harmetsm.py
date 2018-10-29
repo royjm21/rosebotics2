@@ -10,8 +10,8 @@ import time
 def main():
     """ Runs YOUR specific part of the project """
     test_go_straight_inches()
-    test_wait_until_pressed()
-    test_wait_until_released()
+    # test_wait_until_pressed()
+    # test_wait_until_released()
 
 
 def test_go_straight_inches():
@@ -19,9 +19,10 @@ def test_go_straight_inches():
 
     print('Test 1')
     robot = rb.Snatch3rRobot()  # to construct a dog doq = Dog(), WAS MISSING PARENTHESES
-
+    time.sleep(2)
     print('Testing with 12 inches')
-    robot.drive_system.go_straight_inches(12)
+    robot.drive_system.go_straight_inches(35)
+    print('Testing complete')
 
 
 def test_wait_until_pressed():
@@ -39,6 +40,19 @@ def test_wait_until_released():
     robot = rb.Snatch3rRobot()
     robot.touch_sensor.wait_until_released()
     print('Sensor released')
+
+
+def test_calibrated():
+    print('test if calibrated')
+    robot = rb.Snatch3rRobot()
+    robot.arm.calibrate(12)
+    print('Arm calibrated')
+
+
+def test_raise_arm_and_close_claw():
+    print("testing raise arm and close claw")
+    robot = rb.Snatch3rRobot()
+    robot.arm.raise_arm_and_close_claw(11)
 
 
 ############################################
