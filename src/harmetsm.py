@@ -21,7 +21,8 @@ def test_go_straight_inches():
     robot = rb.Snatch3rRobot()  # to construct a dog doq = Dog(), WAS MISSING PARENTHESES
 
     print('Testing with 12 inches')
-    robot.drive_system.go_straight_inches(12)
+    while time.time() < 10:
+        robot.drive_system.start_moving()
 
 
 def test_wait_until_pressed():
