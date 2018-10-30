@@ -10,6 +10,8 @@ import time
 def main():
     """ Runs YOUR specific part of the project """
     run_test_spin_in_place_degrees()
+    run_test_turn_degrees()
+    # run_test_polygon()
 
 
 def spin_in_place_degrees(self,
@@ -52,12 +54,12 @@ def run_test_spin_in_place_degrees():
 def run_test_turn_degrees():
     robot = rb.Snatch3rRobot()
     print('45 degree turn')
-    robot.drive_system.turn_degrees(45 * 11)
+    robot.drive_system.turn_degrees(45 * 5.5)
     print('90 degree turn')
     robot.drive_system.turn_degrees(90 * 11)
     print('180 degree turn')
     robot.drive_system.turn_degrees(180 * 11)
-    print('360 degree turn')
+    print('270 degree turn')
     robot.drive_system.turn_degrees(360 * 11)
 
 
