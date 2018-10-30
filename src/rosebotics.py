@@ -11,6 +11,7 @@ from ev3dev import ev3
 from enum import Enum
 import low_level_rosebotics as rb
 import time
+import math
 
 
 class StopAction(Enum):
@@ -152,17 +153,17 @@ class DriveSystem(object):
             self.left_wheel.start_spinning(duty_cycle_percent)
         # if turn, counter clock wise is right wheel
             while True:
-                if self.left_wheel.get_degrees_spun() > degrees:
+                if self.left_wheel.get_degrees_spun() > ((13 * math.pi) * (degrees/360) * 83):
                     self.left_wheel.stop_spinning(stop_action)
                     break
 
     def polygon(self, sides, length):
         for k in range(sides):
             self.go_straight_inches(length)
-            self.turn_degrees((180 - (sides - 2) / 180) * 1.2)
+            self.turn_degrees((180 - (sides - 2) / 180))
         self.left_wheel.stop_spinning(StopAction.BRAKE)
         self.right_wheel.stop_spinning(StopAction.BRAKE)
-        
+
 
 class ArmAndClaw(object):
     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
