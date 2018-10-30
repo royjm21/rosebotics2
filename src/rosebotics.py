@@ -161,9 +161,6 @@ class DriveSystem(object):
             self.go_straight_inches(length)
             self.turn_degrees((180 - (sides - 2) / 180) * 1.2)
 
-    def follow_the_black_line(self):
-        self.start_moving()
-        self.
 
 class ArmAndClaw(object):
     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):

@@ -9,10 +9,21 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
-    test_go_straight_inches()
+    # test_go_straight_inches()
+    follow_the_black_line(rb.Snatch3rRobot())
     # test_wait_until_pressed()
     # test_wait_until_released()
 
+
+def follow_the_black_line(robot):
+    while True:
+        x = robot.color_sensor.get_reflected_intensity()  # 100 in intensity is white, 1 through 4 is black
+        print(x)
+        if x <= 10:
+            robot.drive_system.start_moving(left_wheel_duty_cycle_percent=25, right_wheel_duty_cycle_percent=25)
+        if x >= 10:  # go counterclockwise in this case
+            robot.drive_system.start_moving(left_wheel_duty_cycle_percent=0, right_wheel_duty_cycle_percent=50)
+        
 
 def test_go_straight_inches():
     print('testing go_straight_inches')
