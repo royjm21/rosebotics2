@@ -149,11 +149,14 @@ class DriveSystem(object):
             """
             # TODO: Do a few experiments to determine the constant that converts
             # TODO:   from wheel-degrees-spun to robot-degrees-turned.
-            # TODO:   Assume that the conversion is linear with respect to speed.
+            # TODOne:   Assume that the conversion is linear with respect to speed.
             self.left_wheel.start_spinning(duty_cycle_percent)
         # if turn, counter clock wise is right wheel
+            'modeled path of wheels as part of the circumference of a circle, assuming robot is 6.5 in wide which is'
+            'the circumference of the circle'
+
             while True:
-                if self.left_wheel.get_degrees_spun() > ((13 * math.pi) * (degrees/360) * 87):
+                if self.left_wheel.get_degrees_spun() * 87 > (degrees * ((13 * math.pi) / 360)):
                     self.left_wheel.stop_spinning(stop_action)
                     break
 
