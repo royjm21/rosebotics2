@@ -153,7 +153,7 @@ class DriveSystem(object):
             self.left_wheel.start_spinning(duty_cycle_percent)
         # if turn, counter clock wise is right wheel
             while True:
-                if self.left_wheel.get_degrees_spun() > ((13 * math.pi) * (degrees/360) * 83):
+                if self.left_wheel.get_degrees_spun() > ((13 * math.pi) * (degrees/360) * 87):
                     self.left_wheel.stop_spinning(stop_action)
                     break
 
