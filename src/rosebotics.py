@@ -137,7 +137,7 @@ class DriveSystem(object):
                 self.right_wheel.stop_spinning(stop_action)
                 break
 
-    def turn_degrees(self,degrees, duty_cycle_percent=100, stop_action=StopAction.BRAKE):
+    def turn_degrees(self, degrees, duty_cycle_percent=100, stop_action=StopAction.BRAKE):
             """
             Turn (i.e., only one wheel moves)
             the given number of degrees, at the given speed (-100 to 100,
