@@ -2,18 +2,19 @@
   Capstone Project.
   This module contains high-level, general-purpose methods for a Snatch3r robot.
 
-  Team members:  PUT_YOUR_NAMES_HERE.
+  Team members:  Susan Harmet, Jeremy Roy, Gerardo Santana.
   Fall term, 2018-2019.
 """
-# TODO: Put your names in the above.
+# TODOne: Put your names in the above.
 # TODO: Do the TODO's below.
 # TODO: Augment this module as appropriate, being sure to always
-# TODO:   ** coordinate with your teammates ** in doing so.
+# TODOne:   ** coordinate with your teammates ** in doing so.
 
 from ev3dev import ev3
 from enum import Enum
 import low_level_rosebotics_new as low_level_rb
 import time
+import math
 
 # ------------------------------------------------------------------------------
 # Global constants.  Reference them as (for example):  rb.BRAKE   rb.GREEN
@@ -216,6 +217,10 @@ class DriveSystem(object):
         # TODO:   Assume that the conversion is linear with respect to speed.
         # TODO: Don't forget that the Wheel object's position begins wherever
         # TODO:   it last was, not necessarily 0.
+        self.start_moving(duty_cycle_percent)
+        while True:
+            if self.left_wheel.get_degrees_spun() >= inches * 87:
+                self.stop_moving(stop_action)
 
     def spin_in_place_degrees(self,
                               degrees,
@@ -235,6 +240,13 @@ class DriveSystem(object):
         # TODO:   Assume that the conversion is linear with respect to speed.
         # TODO: Don't forget that the Wheel object's position begins wherever
         # TODO:   it last was, not necessarily 0.
+        self.left_wheel.start_spinning(duty_cycle_percent)
+        self.right_wheel.start_spinning(-duty_cycle_percent)
+        while True:
+            if self.left_wheel.get_degrees_spun() > degrees:
+                self.left_wheel.stop_spinning(stop_action)
+                self.right_wheel.stop_spinning(stop_action)
+                break
 
     def turn_degrees(self,
                      degrees,
@@ -254,6 +266,18 @@ class DriveSystem(object):
         # TODO:   Assume that the conversion is linear with respect to speed.
         # TODO: Don't forget that the Wheel object's position begins wherever
         # TODO:   it last was, not necessarily 0.
+        self.left_wheel.start_spinning(duty_cycle_percent)
+        while True:
+            if self.left_wheel.get_degrees_spun() * 87 > (degrees * ((13 * math.pi) / 360)):
+                self.left_wheel.stop_spinning(stop_action)
+                break
+
+    def polygon(self, sides, length):
+        for k in range(sides):
+            self.go_straight_inches(length)
+            self.turn_degrees((180 - (sides - 2) / 180))
+        self.left_wheel.stop_spinning(StopAction.BRAKE)
+        self.right_wheel.stop_spinning(StopAction.BRAKE)
 
 
 class TouchSensor(low_level_rb.TouchSensor):
@@ -272,11 +296,18 @@ class TouchSensor(low_level_rb.TouchSensor):
 
     def wait_until_pressed(self):
         """ Waits (doing nothing new) until the touch sensor is pressed. """
-        # TODO.
+        # TODOne.
+        while True:
+            if self.get_value() == 1:
+                break
 
     def wait_until_released(self):
         """ Waits (doing nothing new) until the touch sensor is released. """
-        # TODO
+        # TODOne
+        self.wait_until_pressed()
+        while True:
+            if self.get_value() == 0:
+                break
 
 
 class ColorSensor(low_level_rb.ColorSensor):
@@ -288,7 +319,6 @@ class ColorSensor(low_level_rb.ColorSensor):
 
     def __init__(self, port=ev3.INPUT_3):
         super().__init__(port)
-
 
     def get_color(self):
         """
@@ -332,7 +362,10 @@ class ColorSensor(low_level_rb.ColorSensor):
         light intensity is less than the given value (threshold), which should
         be between 0 (no light reflected) and 100 (maximum light reflected).
         """
-        # TODO.
+        # TODOne.
+        while True:
+            if self.get_reflected_intensity() <= reflected_light_intensity:
+                break
 
     def wait_until_intensity_is_greater_than(self, reflected_light_intensity):
         """
@@ -340,7 +373,10 @@ class ColorSensor(low_level_rb.ColorSensor):
         light intensity is greater than the given value (threshold), which
         should be between 0 (no light reflected) and 100 (max light reflected).
         """
-        # TODO.
+        # TODOne
+        while True:
+            if self.get_reflected_intensity() >= reflected_light_intensity:
+                break
 
     def wait_until_color_is(self, color):
         """
@@ -348,7 +384,10 @@ class ColorSensor(low_level_rb.ColorSensor):
         of what color it sees is the given color.
         The given color must be a Color (as defined above).
         """
-        # TODO.
+        # TODOne.
+        while True:
+            if self.get_color() == color:
+                break
 
     def wait_until_color_is_one_of(self, colors):
         """
@@ -356,7 +395,15 @@ class ColorSensor(low_level_rb.ColorSensor):
         of what color it sees is any one of the given sequence of colors.
         Each item in the sequence must be a Color (as defined above).
         """
-        # TODO.
+        # TODOne.
+        for k in range(len(colors)):
+            if self.get_color() == colors[k]:
+                break
+
+    def drive_until_color(self, color):
+        while True:
+            if self.get_color() == color:
+                break
 
 
 class Camera(object):
