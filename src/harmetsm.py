@@ -3,7 +3,7 @@
   Fall term, 2018-2019.
 """
 
-import rosebotics as rb
+import rosebotics_new as rb
 import time
 
 
@@ -13,6 +13,7 @@ def main():
     follow_the_black_line(rb.Snatch3rRobot())
     # test_wait_until_pressed()
     # test_wait_until_released()
+    test_beep_for_object(rb.Snatch3rRobot())
 
 
 def follow_the_black_line(robot):
@@ -23,7 +24,7 @@ def follow_the_black_line(robot):
             robot.drive_system.start_moving(left_wheel_duty_cycle_percent=25, right_wheel_duty_cycle_percent=25)
         if x >= 10:  # go counterclockwise in this case
             robot.drive_system.start_moving(left_wheel_duty_cycle_percent=0, right_wheel_duty_cycle_percent=50)
-        
+
 
 def test_go_straight_inches():
     print('testing go_straight_inches')
@@ -57,6 +58,10 @@ def test_wait_until_released():
     robot = rb.Snatch3rRobot()
     robot.touch_sensor.wait_until_released()
     print('Sensor released')
+
+
+def test_beep_for_object(robot):
+    robot.proximity_sensor.beep_for_object()
 
 
 # def test_calibrated():

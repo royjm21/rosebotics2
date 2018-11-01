@@ -501,6 +501,7 @@ class InfraredAsProximitySensor(low_level_rb.InfraredSensor):
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
        their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
     """
+
     # TODO: In the above line, put the name of the primary author of this class.
 
     def __init__(self, ir_sensor_port):
@@ -529,6 +530,10 @@ class InfraredAsProximitySensor(low_level_rb.InfraredSensor):
         """
         inches_per_cm = 2.54
         return 70 * inches_per_cm * self.get_distance_to_nearest_object() / 100
+
+    def beep_for_object(self):
+        if self.get_distance_to_nearest_object() <= 12:
+            ev3.Sound.beep()
 
 
 class InfraredAsBeaconSensor(object):
@@ -591,6 +596,7 @@ class InfraredAsBeaconButtonSensor(object):
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
     their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
     """
+
     # TODO: In the above line, put the name of the primary author of this class.
 
     def __init__(self, ir_sensor, channel=1):
@@ -648,6 +654,7 @@ class BrickButtonSensor(object):
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
     their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
     """
+
     # TODO: In the above line, put the name of the primary author of this class.
 
     def __init__(self):
@@ -699,6 +706,7 @@ class ArmAndClaw(object):
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
     their colleagues, the entire team, and Jeremy Roy.
     """
+
     # TODOne: In the above line, put the name of the primary author of this class.
 
     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
