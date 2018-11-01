@@ -220,7 +220,7 @@ class DriveSystem(object):
         self.start_moving(duty_cycle_percent)
         while True:
             if self.left_wheel.get_degrees_spun() >= inches * 87:
-                self.stop_moving(stop_action)
+                self.stop_moving('Brake')
 
     def spin_in_place_degrees(self,
                               degrees,
@@ -697,9 +697,9 @@ class ArmAndClaw(object):
     """
     A class for the arm and its associated claw.
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
-    their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
+    their colleagues, the entire team, and Jeremy Roy.
     """
-    # TODO: In the above line, put the name of the primary author of this class.
+    # TODOne: In the above line, put the name of the primary author of this class.
 
     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
         # The ArmAndClaw's  motor  is not really a Wheel, of course,
@@ -721,7 +721,14 @@ class ArmAndClaw(object):
         again at a reasonable speed. Then set the motor's position to 0.
         (Hence, 0 means all the way DOWN and 14.2 * 360 means all the way UP).
         """
-        # TODO: Do this as STEP 2 of implementing this class.
+        # TODOne: Do this as STEP 2 of implementing this class.
+        self.motor.start_spinning(60)
+        if TouchSensor.is_pressed(self.touch_sensor):
+            self.motor.stop_spinning('brake')
+
+        self.motor.start_spinning(-60)
+        if self.motor.get_degrees_spun() >= 14.2 * 360:
+            self.motor.stop_spinning('brake')
 
     def raise_arm_and_close_claw(self):
         """
@@ -730,7 +737,10 @@ class ArmAndClaw(object):
         Positive speeds make the arm go UP; negative speeds make it go DOWN.
         Stop when the touch sensor is pressed.
         """
-        # TODO: Do this as STEP 1 of implementing this class.
+        # TODOne: Do this as STEP 1 of implementing this class.
+        self.motor.start_spinning(60)
+        if TouchSensor.is_pressed(self.touch_sensor):
+            self.motor.stop_spinning('brake')
 
     def move_arm_to_position(self, position):
         """

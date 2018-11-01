@@ -5,6 +5,7 @@
 
 import rosebotics as rb
 import time
+import ev3dev.ev3 as ev3
 
 
 def main():
@@ -74,5 +75,8 @@ def run_test_polygon():
     print('pentagon with 6 inch sides')
     robot.drive_system.polygon(5, 6)
 
+
+def run_test_calibrate_arm_and_claw():
+    robot = rb
 
 main()
