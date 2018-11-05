@@ -2,13 +2,13 @@
   Capstone Project.
   This module contains high-level, general-purpose methods for a Snatch3r robot.
 
-  Team members:  Susan Harmet, Jeremy Roy, Gerardo Santana.
+  Team members:  Susan Harmet, Jeremy Roy, and Gerardo Santana.
   Fall term, 2018-2019.
 """
 # TODOne: Put your names in the above.
-# TODO: Do the TODO's below.
-# TODO: Augment this module as appropriate, being sure to always
-# TODOne:   ** coordinate with your teammates ** in doing so.
+# DONE: Do the DONE's below.
+# DONE: Augment this module as appropriate, being sure to always
+# DOne:   ** coordinate with your teammates ** in doing so.
 
 from ev3dev import ev3
 from enum import Enum
@@ -529,11 +529,12 @@ class InfraredAsProximitySensor(low_level_rb.InfraredSensor):
         is within its field of vision.
         """
         inches_per_cm = 2.54
-        return 70 * inches_per_cm * self.get_distance_to_nearest_object() / 100
+        return 70 / inches_per_cm * self.get_distance_to_nearest_object() / 100
 
     def beep_for_object(self):
-        if self.get_distance_to_nearest_object() <= 12:
-            ev3.Sound.beep()
+        while True:
+            if self.get_distance_to_nearest_object_in_inches() <= 12:
+                ev3.Sound.beep('')
 
 
 class InfraredAsBeaconSensor(object):

@@ -10,7 +10,7 @@ import time
 def main():
     """ Runs YOUR specific part of the project """
     # test_go_straight_inches()
-    follow_the_black_line(rb.Snatch3rRobot())
+    # follow_the_black_line(rb.Snatch3rRobot())
     # test_wait_until_pressed()
     # test_wait_until_released()
     test_beep_for_object(rb.Snatch3rRobot())
@@ -61,20 +61,12 @@ def test_wait_until_released():
 
 
 def test_beep_for_object(robot):
+    print('Testing proximity sensor')
+    print(robot.proximity_sensor.get_distance_to_nearest_object_in_inches())
+    print('Testing beep mechanism')
+    robot.Sound.beep()
+    print('testing Beep for object 12 inches or closer')
     robot.proximity_sensor.beep_for_object()
-
-
-# def test_calibrated():
-#     print('test if calibrated')
-#     robot = rb.Snatch3rRobot()
-#     robot.calibrate(12)
-#     print('Arm calibrated')
-
-#
-# def test_raise_arm_and_close_claw():
-#     print("testing raise arm and close claw")
-#     robot = rb.Snatch3rRobot()
-#     robot.arm.raise_arm_and_close_claw(11)
 
 
 ############################################
