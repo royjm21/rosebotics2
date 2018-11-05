@@ -2,19 +2,18 @@
   Capstone Project.
   This module contains high-level, general-purpose methods for a Snatch3r robot.
 
-  Team members:  Susan Harmet, Jeremy Roy, and Gerardo Santana.
+  Team members:  PUT_YOUR_NAMES_HERE.
   Fall term, 2018-2019.
 """
-# TODOne: Put your names in the above.
-# DONE: Do the DONE's below.
-# DONE: Augment this module as appropriate, being sure to always
-# DOne:   ** coordinate with your teammates ** in doing so.
+# TODO: Put your names in the above.
+# TODO: Do the TODO's below.
+# TODO: Augment this module as appropriate, being sure to always
+# TODO:   ** coordinate with your teammates ** in doing so.
 
 from ev3dev import ev3
 from enum import Enum
 import low_level_rosebotics_new as low_level_rb
 import time
-import math
 
 # ------------------------------------------------------------------------------
 # Global constants.  Reference them as (for example):  rb.BRAKE   rb.GREEN
@@ -134,9 +133,8 @@ class Snatch3rRobot(object):
         self.camera = Camera(camera_port)
 
         self.proximity_sensor = InfraredAsProximitySensor(ir_sensor_port)
-        # self.beacon_sensor = InfraredAsBeaconSensor(channel=1)
-        # self.beacon_button_sensor = InfraredAsBeaconButtonSensor(ir_sensor,
-        #                                                          channel=1)
+        self.beacon_sensor = InfraredAsBeaconSensor(channel=1)
+        self.beacon_button_sensor = InfraredAsBeaconButtonSensor(channel=1)
 
         self.brick_button_sensor = BrickButtonSensor()
 
@@ -217,10 +215,6 @@ class DriveSystem(object):
         # TODO:   Assume that the conversion is linear with respect to speed.
         # TODO: Don't forget that the Wheel object's position begins wherever
         # TODO:   it last was, not necessarily 0.
-        self.start_moving(duty_cycle_percent)
-        while True:
-            if self.left_wheel.get_degrees_spun() >= inches * 87:
-                self.stop_moving('Brake')
 
     def spin_in_place_degrees(self,
                               degrees,
@@ -240,13 +234,6 @@ class DriveSystem(object):
         # TODO:   Assume that the conversion is linear with respect to speed.
         # TODO: Don't forget that the Wheel object's position begins wherever
         # TODO:   it last was, not necessarily 0.
-        self.left_wheel.start_spinning(duty_cycle_percent)
-        self.right_wheel.start_spinning(-duty_cycle_percent)
-        while True:
-            if self.left_wheel.get_degrees_spun() > degrees:
-                self.left_wheel.stop_spinning(stop_action)
-                self.right_wheel.stop_spinning(stop_action)
-                break
 
     def turn_degrees(self,
                      degrees,
@@ -266,18 +253,6 @@ class DriveSystem(object):
         # TODO:   Assume that the conversion is linear with respect to speed.
         # TODO: Don't forget that the Wheel object's position begins wherever
         # TODO:   it last was, not necessarily 0.
-        self.left_wheel.start_spinning(duty_cycle_percent)
-        while True:
-            if self.left_wheel.get_degrees_spun() * 87 > (degrees * ((13 * math.pi) / 360)):
-                self.left_wheel.stop_spinning(stop_action)
-                break
-
-    def polygon(self, sides, length):
-        for k in range(sides):
-            self.go_straight_inches(length)
-            self.turn_degrees((180 - (sides - 2) / 180))
-        self.left_wheel.stop_spinning(StopAction.BRAKE)
-        self.right_wheel.stop_spinning(StopAction.BRAKE)
 
 
 class TouchSensor(low_level_rb.TouchSensor):
@@ -296,18 +271,11 @@ class TouchSensor(low_level_rb.TouchSensor):
 
     def wait_until_pressed(self):
         """ Waits (doing nothing new) until the touch sensor is pressed. """
-        # TODOne.
-        while True:
-            if self.get_value() == 1:
-                break
+        # TODO.
 
     def wait_until_released(self):
         """ Waits (doing nothing new) until the touch sensor is released. """
-        # TODOne
-        self.wait_until_pressed()
-        while True:
-            if self.get_value() == 0:
-                break
+        # TODO
 
 
 class ColorSensor(low_level_rb.ColorSensor):
@@ -319,6 +287,7 @@ class ColorSensor(low_level_rb.ColorSensor):
 
     def __init__(self, port=ev3.INPUT_3):
         super().__init__(port)
+
 
     def get_color(self):
         """
@@ -362,10 +331,7 @@ class ColorSensor(low_level_rb.ColorSensor):
         light intensity is less than the given value (threshold), which should
         be between 0 (no light reflected) and 100 (maximum light reflected).
         """
-        # TODOne.
-        while True:
-            if self.get_reflected_intensity() <= reflected_light_intensity:
-                break
+        # TODO.
 
     def wait_until_intensity_is_greater_than(self, reflected_light_intensity):
         """
@@ -373,10 +339,7 @@ class ColorSensor(low_level_rb.ColorSensor):
         light intensity is greater than the given value (threshold), which
         should be between 0 (no light reflected) and 100 (max light reflected).
         """
-        # TODOne
-        while True:
-            if self.get_reflected_intensity() >= reflected_light_intensity:
-                break
+        # TODO.
 
     def wait_until_color_is(self, color):
         """
@@ -384,10 +347,7 @@ class ColorSensor(low_level_rb.ColorSensor):
         of what color it sees is the given color.
         The given color must be a Color (as defined above).
         """
-        # TODOne.
-        while True:
-            if self.get_color() == color:
-                break
+        # TODO.
 
     def wait_until_color_is_one_of(self, colors):
         """
@@ -395,15 +355,7 @@ class ColorSensor(low_level_rb.ColorSensor):
         of what color it sees is any one of the given sequence of colors.
         Each item in the sequence must be a Color (as defined above).
         """
-        # TODOne.
-        for k in range(len(colors)):
-            if self.get_color() == colors[k]:
-                break
-
-    def drive_until_color(self, color):
-        while True:
-            if self.get_color() == color:
-                break
+        # TODO.
 
 
 class Camera(object):
@@ -511,7 +463,6 @@ class InfraredAsProximitySensor(low_level_rb.InfraredSensor):
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
        their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
     """
-
     # TODO: In the above line, put the name of the primary author of this class.
 
     def __init__(self, ir_sensor_port):
@@ -539,12 +490,7 @@ class InfraredAsProximitySensor(low_level_rb.InfraredSensor):
         is within its field of vision.
         """
         inches_per_cm = 2.54
-        return 70 / inches_per_cm * self.get_distance_to_nearest_object() / 100
-
-    def beep_for_object(self):
-        while True:
-            if self.get_distance_to_nearest_object_in_inches() <= 12:
-                ev3.Sound.beep('')
+        return 70 * inches_per_cm * self.get_distance_to_nearest_object() / 100
 
 
 class InfraredAsBeaconSensor(object):
@@ -558,7 +504,7 @@ class InfraredAsBeaconSensor(object):
 
     def __init__(self, channel=1):
         self.channel = channel
-        self._underlying_ir_sensor = ev3.BeaconSeeker()
+        self._underlying_ir_sensor = ev3.BeaconSeeker(channel=channel)
 
     def set_channel(self, channel):
         """
@@ -566,7 +512,7 @@ class InfraredAsBeaconSensor(object):
         Beacon has a switch that can set the channel to 1, 2, 3 or 4.
         """
         self.channel = channel
-        self._underlying_ir_sensor = ev3.BeaconSeeker()
+        self._underlying_ir_sensor = ev3.BeaconSeeker(channel=channel)
 
     def get_channel(self):
         return self.channel
@@ -607,15 +553,11 @@ class InfraredAsBeaconButtonSensor(object):
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
     their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
     """
-
     # TODO: In the above line, put the name of the primary author of this class.
 
-    def __init__(self, ir_sensor, channel=1):
-        self._underlying_ir_sensor = ir_sensor
-        if channel:  # None means use the given InfraredSensor's channel
-            self._underlying_ir_sensor.channel = channel
-        self._underlying_remote_control = \
-            low_level_rb.BeaconButtonController(ir_sensor, channel)
+    def __init__(self, channel=1):
+        self.channel = channel
+        self._underlying_ir_sensor = ev3.RemoteControl(channel=channel)
         self.button_names = {
             "red_up": TOP_RED_BUTTON,
             "red_down": BOTTOM_RED_BUTTON,
@@ -624,39 +566,39 @@ class InfraredAsBeaconButtonSensor(object):
             "beacon": BEACON_BUTTON
         }
 
+
     def set_channel(self, channel):
         """
         Makes this sensor look for signals on the given channel. The physical
         Beacon has a switch that can set the channel to 1, 2, 3 or 4.
         """
-        self._underlying_ir_sensor.channel = channel
+        self.channel = channel
+        self._underlying_ir_sensor = ev3.RemoteControl(channel=channel)
 
     def get_channel(self):
-        return self._underlying_ir_sensor.channel
+        return self.channel
 
-    def get_buttons_pressed(self):
-        """
-        Returns a list of the numbers corresponding to buttons on the Beacon
-        which are currently pressed.
-        """
-        button_list = self._underlying_remote_control.buttons_pressed
-        for k in range(len(button_list)):
-            button_list[k] = self.button_names[button_list[k]]
+    # def get_buttons_pressed(self):
+    #     """
+    #     Returns a list of the numbers corresponding to buttons on the Beacon
+    #     which are currently pressed.
+    #     """
+    #     button_list = self._underlying_ir_sensor.buttons_pressed
+    #     for k in range(len(button_list)):
+    #         button_list[k] = self.button_names[button_list[k]]
 
     def is_top_red_button_pressed(self):
-        return self._underlying_remote_control.red_up
+        return self._underlying_ir_sensor.red_up
 
     def is_bottom_red_button_pressed(self):
-        return self._underlying_remote_control.red_down
+        return self._underlying_ir_sensor.red_down
 
     def is_top_blue_button_pressed(self):
-        return self._underlying_remote_control.blue_up
+        return self._underlying_ir_sensor.blue_up
 
     def is_bottom_blue_button_pressed(self):
-        return self._underlying_remote_control.buttons_pressed
+        return self._underlying_ir_sensor.blue_down
 
-    def is_beacon_button_pressed(self):
-        return self._underlying_remote_control.buttons_pressed
 
 
 class BrickButtonSensor(object):
@@ -665,7 +607,6 @@ class BrickButtonSensor(object):
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
     their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
     """
-
     # TODO: In the above line, put the name of the primary author of this class.
 
     def __init__(self):
@@ -715,10 +656,9 @@ class ArmAndClaw(object):
     """
     A class for the arm and its associated claw.
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
-    their colleagues, the entire team, and Jeremy Roy.
+    their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
     """
-
-    # TODOne: In the above line, put the name of the primary author of this class.
+    # TODO: In the above line, put the name of the primary author of this class.
 
     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
         # The ArmAndClaw's  motor  is not really a Wheel, of course,
@@ -740,14 +680,7 @@ class ArmAndClaw(object):
         again at a reasonable speed. Then set the motor's position to 0.
         (Hence, 0 means all the way DOWN and 14.2 * 360 means all the way UP).
         """
-        # TODOne: Do this as STEP 2 of implementing this class.
-        self.motor.start_spinning(100)
-        if TouchSensor.is_pressed(self.touch_sensor):
-            self.motor.stop_spinning('brake')
-
-        self.motor.start_spinning(-100)
-        if self.motor.get_degrees_spun() >= 14.2 * 360:
-            self.motor.stop_spinning('brake')
+        # TODO: Do this as STEP 2 of implementing this class.
 
     def raise_arm_and_close_claw(self):
         """
@@ -756,10 +689,7 @@ class ArmAndClaw(object):
         Positive speeds make the arm go UP; negative speeds make it go DOWN.
         Stop when the touch sensor is pressed.
         """
-        # TODOne: Do this as STEP 1 of implementing this class.
-        self.motor.start_spinning(100)
-        if TouchSensor.is_pressed(self.touch_sensor):
-            self.motor.stop_spinning('brake')
+        # TODO: Do this as STEP 1 of implementing this class.
 
     def move_arm_to_position(self, position):
         """
