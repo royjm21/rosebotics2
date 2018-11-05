@@ -8,6 +8,7 @@ import time
 import ev3dev.ev3 as ev3
 
 
+
 def main():
     """ Runs YOUR specific part of the project """
     run_test_spin_in_place_degrees()
@@ -77,6 +78,8 @@ def run_test_polygon():
 
 
 def run_test_calibrate_arm_and_claw():
-    robot = rb
+    robot = rb.Snatch3rRobot
+
+
 
 main()
