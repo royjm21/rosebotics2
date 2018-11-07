@@ -136,7 +136,7 @@ class Snatch3rRobot(object):
         self.proximity_sensor = InfraredAsProximitySensor(ir_sensor_port)
         self.beacon_sensor = InfraredAsBeaconSensor(channel=1)
         self.beacon_button_sensor = InfraredAsBeaconButtonSensor(
-                                                                  channel=1)
+            channel=1)
 
         self.brick_button_sensor = BrickButtonSensor()
 
@@ -509,10 +509,10 @@ class InfraredAsProximitySensor(low_level_rb.InfraredSensor):
     A class for the infrared sensor when it is in the mode in which it
     measures distance to the nearest object that it sees.
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
-       their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
+       their colleagues, the entire team, and Susan Harmet.
     """
 
-    # TODO: In the above line, put the name of the primary author of this class.
+    # DONE: In the above line, put the name of the primary author of this class.
 
     def __init__(self, ir_sensor_port):
         super().__init__(ir_sensor_port)
@@ -545,6 +545,11 @@ class InfraredAsProximitySensor(low_level_rb.InfraredSensor):
         while True:
             if self.get_distance_to_nearest_object_in_inches() <= 12:
                 ev3.Sound.beep('')
+
+    def play_for_object(self):
+        while True:
+            if self.get_distance_to_nearest_object_in_inches() <= 12:
+                ev3.Sound.play("/home/robot/csse120/assets/sounds/awesome_pcm.wav")
 
 
 class InfraredAsBeaconSensor(object):
@@ -607,6 +612,7 @@ class InfraredAsBeaconButtonSensor(object):
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
     their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
     """
+
     # TODO: In the above line, put the name of the primary author of this class.
 
     def __init__(self, channel=1):
@@ -630,6 +636,18 @@ class InfraredAsBeaconButtonSensor(object):
 
     def get_channel(self):
         return self.channel
+
+    def move_forward_with_red(self, inches):
+        robot = Snatch3rRobot()
+        while True:
+            if self.is_top_red_button_pressed():
+                robot.drive_system.go_straight_inches(inches)
+
+    def move_backward_with_top_blue(self, inches):
+        robot = Snatch3rRobot()
+        while True:
+            if self.is_top_blue_button_pressed():
+                robot.drive_system.go_straight_inches(inches)
 
     # def get_buttons_pressed(self):
     #     """

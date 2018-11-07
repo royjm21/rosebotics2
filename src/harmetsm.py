@@ -9,11 +9,12 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
-    # test_go_straight_inches()
+    test_go_straight_inches()
     # follow_the_black_line(rb.Snatch3rRobot())
     # test_wait_until_pressed()
     # test_wait_until_released()
-    test_beep_for_object(rb.Snatch3rRobot())
+    # test_beep_for_object(rb.Snatch3rRobot())
+    # test_beacon_button_press_commands(rb.Snatch3rRobot())
 
 
 def follow_the_black_line(robot):
@@ -64,9 +65,22 @@ def test_beep_for_object(robot):
     print('Testing proximity sensor')
     print(robot.proximity_sensor.get_distance_to_nearest_object_in_inches())
     print('Testing beep mechanism')
-    robot.Sound.beep()
+    # robot.Sound.beep()
     print('testing Beep for object 12 inches or closer')
     robot.proximity_sensor.beep_for_object()
+
+
+def test_beacon_button_press_commands(robot):
+    print('Testing beacon button pressed')
+    if robot.beacon_button_sensor.is_top_red_button_pressed():
+        print('Button Pressed!')
+
+    print("Testing button's capacity to control go straight 11 inches forward")
+    robot.beacon_button_sensor.move_forward_with_red(11)
+    print('Testing Completed')
+
+    print("Testing button's capacity to control go straight 11 inches backwards")
+    robot.beacon_button_sensor.move_backward_with_top_blue(-11)
 
 
 ############################################
