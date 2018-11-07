@@ -620,7 +620,6 @@ class InfraredAsBeaconButtonSensor(object):
             "beacon": BEACON_BUTTON
         }
 
-
     def set_channel(self, channel):
         """
         Makes this sensor look for signals on the given channel. The physical
@@ -736,13 +735,17 @@ class ArmAndClaw(object):
         (Hence, 0 means all the way DOWN and 14.2 * 360 means all the way UP).
         """
         # TODOne: Do this as STEP 2 of implementing this class.
-        self.motor.start_spinning(100)
-        if TouchSensor.is_pressed(self.touch_sensor):
-            self.motor.stop_spinning('brake')
-
+        self.raise_arm_and_close_claw()
+        self.motor.reset_degrees_spun()
         self.motor.start_spinning(-100)
-        if self.motor.get_degrees_spun() >= 14.2 * 360:
-            self.motor.stop_spinning('brake')
+        while True:
+            if self.motor.get_degrees_spun() >= 14.2*360:
+                break
+        self.motor.stop_spinning('brake')
+        self.motor.get_degrees_spun()
+
+    def run_test_calibrate(self):
+        self.calibrate()
 
     def raise_arm_and_close_claw(self):
         """
@@ -753,12 +756,24 @@ class ArmAndClaw(object):
         """
         # TODOne: Do this as STEP 1 of implementing this class.
         self.motor.start_spinning(100)
-        if TouchSensor.is_pressed(self.touch_sensor):
-            self.motor.stop_spinning('brake')
+        self.touch_sensor.wait_until_pressed()
+        self.motor.stop_spinning('brake')
+
+    def run_test_raise(self):
+        self.raise_arm_and_close_claw()
 
     def move_arm_to_position(self, position):
         """
         Spin the arm's motor until it reaches the given position.
         Move at a reasonable speed.
         """
-        # TODO: Do this as STEP 3 of implementing this class.
+        # TODOne: Do this as STEP 3 of implementing this class.
+        self.motor.start_spinning(100)
+        while True:
+            if self.motor.get_degrees_spun() >= position * 14.2:
+                self.motor.stop_spinning('brake')
+
+    def run_test_move_arm_to_pos(self):
+        self.move_arm_to_position(0)
+        time.sleep(1)
+        self.move_arm_to_position(45)

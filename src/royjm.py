@@ -6,6 +6,7 @@
 import rosebotics as rb
 import time
 import ev3dev.ev3 as ev3
+import rosebotics_new as rb1
 
 
 
@@ -78,7 +79,7 @@ def run_test_polygon():
 
 
 def run_test_calibrate_arm_and_claw():
-    robot = rb.Snatch3rRobot
+    robot = rb1.Snatch3rRobot
 
 
 
