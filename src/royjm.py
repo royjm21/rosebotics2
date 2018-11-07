@@ -81,6 +81,6 @@ def run_test_polygon():
 def run_test_calibrate_arm_and_claw():
     robot = rb1.Snatch3rRobot
 
-
+rtrjmrogfbb
 
 main()
