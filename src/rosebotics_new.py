@@ -742,7 +742,7 @@ class ArmAndClaw(object):
             if self.motor.get_degrees_spun() <= -(14.2*360):
                 break
         self.motor.stop_spinning('brake')
-        self.motor.get_degrees_spun()
+        self.motor.reset_degrees_spun()
 
     def raise_arm_and_close_claw(self):
         """
