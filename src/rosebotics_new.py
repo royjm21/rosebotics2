@@ -756,21 +756,22 @@ class ArmAndClaw(object):
         self.touch_sensor.wait_until_pressed()
         self.motor.stop_spinning('brake')
 
-    def run_test_raise(self):
-        self.raise_arm_and_close_claw()
-
     def move_arm_to_position(self, position):
         """
         Spin the arm's motor until it reaches the given position.
         Move at a reasonable speed.
         """
         # TODOne: Do this as STEP 3 of implementing this class.
-        self.motor.start_spinning(100)
-        while True:
-            if self.motor.get_degrees_spun() >= position * 14.2:
-                self.motor.stop_spinning('brake')
+        direction = 1
+        if position <= 0:
+            position = 0
+        if position >= 14.2*360:
+            position = 14.2*360
 
-    def run_test_move_arm_to_pos(self):
-        self.move_arm_to_position(0)
-        time.sleep(1)
-        self.move_arm_to_position(45)
+        if position <= self.motor.get_degrees_spun():
+            direction = direction*-1
+
+        self.motor.start_spinning(direction*100)
+
+        if math.fabs(direction*position) <= math.fabs(self.motor.get_degrees_spun()*direction):
+            self.motor.stop_spinning('brake')
