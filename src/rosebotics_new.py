@@ -148,10 +148,8 @@ class DriveSystem(object):
     """
     A class for driving (moving) the robot.
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
-       their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
+       their colleagues, the entire team, and Jeremy Roy.
     """
-
-    # TODO: In the above line, put the name of the primary author of this class.
 
     def __init__(self,
                  left_wheel_port=ev3.OUTPUT_B,
@@ -240,13 +238,13 @@ class DriveSystem(object):
         # TODO:   Assume that the conversion is linear with respect to speed.
         # TODO: Don't forget that the Wheel object's position begins wherever
         # TODO:   it last was, not necessarily 0.
+        degree_multiplier = 6.06
+        self.left_wheel.reset_degrees_spun()
         self.left_wheel.start_spinning(duty_cycle_percent)
-        self.right_wheel.start_spinning(-duty_cycle_percent)
-        while True:
-            if self.left_wheel.get_degrees_spun() > degrees:
-                self.left_wheel.stop_spinning(stop_action)
-                self.right_wheel.stop_spinning(stop_action)
-                break
+        self.right_wheel.start_spinning(duty_cycle_percent * -1)
+        if self.left_wheel.get_degrees_spun() >= degrees*degree_multiplier:
+            self.left_wheel.stop_spinning(stop_action)
+            self.right_wheel.stop_spinning(stop_action)
 
     def turn_degrees(self,
                      degrees,
