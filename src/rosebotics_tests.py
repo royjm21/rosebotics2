@@ -15,8 +15,9 @@ def main():
 
 def run_tests():
     """ Runs various tests. """
-    run_test_ir()
-    # run_test_drive_system()
+    # run_test_ir()
+    run_test_drive_system()
+    time.sleep(10)
     # run_test_touch_sensor()
     # run_test_color_sensor()
     run_test_arm()
