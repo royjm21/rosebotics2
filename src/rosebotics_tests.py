@@ -28,8 +28,10 @@ def run_test_arm():
     robot.arm.calibrate()
     time.sleep(1)
     robot.arm.raise_arm_and_close_claw()
-    # time.sleep(1)
-    # robot.arm.move_arm_to_position(300)
+    time.sleep(1)
+    robot.arm.move_arm_to_position(300)
+    robot.arm.calibrate()
+    robot.arm.move_arm_to_position(100)
 
 
 def run_test_ir():
@@ -98,6 +100,17 @@ def run_test_drive_system():
           robot.drive_system.left_wheel.get_degrees_spun(),
           robot.drive_system.right_wheel.get_degrees_spun())
 
+    print('testing spin in place degrees')
+    robot.drive_system.spin_in_place_degrees(90)
+    time.sleep(1.5)
+    robot.drive_system.spin_in_place_degrees(180)
+    time.sleep(1.5)
+    robot.drive_system.spin_in_place_degrees(360)
+
+    print('testing turn degrees')
+    robot.drive_system.turn_degrees(45)
+    time.sleep(1.5)
+    robot.drive_system.turn_degrees(90)
 
 def run_test_touch_sensor():
     """ Tests the  touch_sensor  of the Snatch3rRobot. """
