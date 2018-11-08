@@ -264,10 +264,13 @@ class DriveSystem(object):
         # TODO:   Assume that the conversion is linear with respect to speed.
         # TODO: Don't forget that the Wheel object's position begins wherever
         # TODO:   it last was, not necessarily 0.
-        self.left_wheel.start_spinning(duty_cycle_percent)
+        self.right_wheel.reset_degrees_spun()
+        self.right_wheel.start_spinning(duty_cycle_percent)
+        degree_conversion = 12.78
         while True:
-            if self.left_wheel.get_degrees_spun() * 87 > (degrees * ((13 * math.pi) / 360)):
-                self.left_wheel.stop_spinning(stop_action)
+            if self.right_wheel.get_degrees_spun() >= degrees*degree_conversion:
+                self.right_wheel.stop_spinning(stop_action)
+                self.right_wheel.reset_degrees_spun()
                 break
 
     def polygon(self, sides, length):
