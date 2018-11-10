@@ -9,8 +9,10 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
-    test_go_straight_inches()
+    # test_go_straight_inches()
+    # time.sleep(5)
     # follow_the_black_line(rb.Snatch3rRobot())
+    # time.sleep(5)
     # test_wait_until_pressed()
     # test_wait_until_released()
     # test_beep_for_object(rb.Snatch3rRobot())

@@ -218,7 +218,8 @@ class DriveSystem(object):
         self.start_moving(duty_cycle_percent)
         while True:
             if self.left_wheel.get_degrees_spun() >= inches * 87:
-                self.stop_moving('Brake')
+                self.stop_moving(stop_action.value)
+                break
 
     def spin_in_place_degrees(self,
                               degrees,
@@ -643,12 +644,14 @@ class InfraredAsBeaconButtonSensor(object):
         while True:
             if self.is_top_red_button_pressed():
                 robot.drive_system.go_straight_inches(inches)
+                break
 
     def move_backward_with_top_blue(self, inches):
         robot = Snatch3rRobot()
         while True:
             if self.is_top_blue_button_pressed():
                 robot.drive_system.go_straight_inches(inches)
+                break
 
     # def get_buttons_pressed(self):
     #     """
@@ -758,7 +761,7 @@ class ArmAndClaw(object):
         self.motor.reset_degrees_spun()
         self.motor.start_spinning(-100)
         while True:
-            if self.motor.get_degrees_spun() <= -(14.2*360):
+            if self.motor.get_degrees_spun() <= -(14.2 * 360):
                 break
         self.motor.stop_spinning('brake')
         self.motor.reset_degrees_spun()
@@ -784,13 +787,13 @@ class ArmAndClaw(object):
         direction = 1
         if position <= 0:
             position = 0
-        if position >= 14.2*360:
-            position = 14.2*360
+        if position >= 14.2 * 360:
+            position = 14.2 * 360
 
         if position <= self.motor.get_degrees_spun():
-            direction = direction*-1
+            direction = direction * -1
 
-        self.motor.start_spinning(direction*100)
+        self.motor.start_spinning(direction * 100)
 
-        if math.fabs(direction*position) <= math.fabs(self.motor.get_degrees_spun()*direction):
+        if math.fabs(direction * position) <= math.fabs(self.motor.get_degrees_spun() * direction):
             self.motor.stop_spinning('brake')

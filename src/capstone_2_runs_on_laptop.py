@@ -63,17 +63,30 @@ def main():
 
 def setup_gui(root_window, mqtt_client):
     """ Constructs and sets up widgets on the given window. """
-    frame = ttk.Frame(root_window, padding=10)
+    frame = ttk.Frame(root_window, padding=30)
+    check_button_a_scale = ttk.Checkbutton(frame, text='A Scale')
+    check_button_b_scale = ttk.Checkbutton(frame,
+                                           text='B Scale')  # need attribute for check button to tell if checked or not
+    play_tone_button = ttk.Button(frame, text="Play This Scale")
+    if check_button_b_scale.selection_get():
+        scale_to_play = check_button_b_scale
+    if check_button_a_scale.selection_get():
+        scale_to_play = check_button_a_scale
     frame.grid()
+    check_button_a_scale.grid()
+    check_button_b_scale.grid()
+    play_tone_button.grid()
 
-    speed_entry_box = ttk.Entry(frame)
-    go_forward_button = ttk.Button(frame, text="Go forward")
+    play_tone_button['command'] = (lambda: tell_to_sing_scales(scale_to_play, mqtt_client))
 
-    speed_entry_box.grid()
-    go_forward_button.grid()
-
-    go_forward_button['command'] = \
-        lambda: handle_go_forward(speed_entry_box, mqtt_client)
+    # speed_entry_box = ttk.Entry(frame);
+    # go_forward_button = ttk.Button(frame, text="Go forward")
+    #
+    # speed_entry_box.grid()
+    # go_forward_button.grid()
+    #
+    # go_forward_button['command'] = \
+    #     lambda: handle_go_forward(speed_entry_box, mqtt_client)
 
 
 def handle_go_forward(entry_box, mqtt_client):
@@ -83,6 +96,17 @@ def handle_go_forward(entry_box, mqtt_client):
     speed_string = entry_box.get()
     print('Sending the go_forward message with speed_string:', speed_string)
     mqtt_client.send_message('go_forward', [speed_string])
+
+
+def tell_to_sing_scales(type_of_scale, mqtt_client):
+    """
+    pretty self explanatory because of def name
+    :param type_of_scale:
+    :param mqtt_client:
+    :return:
+    """
+    print('Sending the tell_to_sing_scales message with type of scale:', type_of_scale)
+    mqtt_client.send_message('play_scales', [type_of_scale])  # breaks because doesn't know attribute
 
 
 main()

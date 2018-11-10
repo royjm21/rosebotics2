@@ -14,7 +14,7 @@ def main():
 
     time.sleep(1)
     print("Playing a note:")
-    ev3.Sound.tone(440, 1500)  # Frequency 440 Hz, for 1.5 seconds
+    ev3.Sound.tone(440, 1500).wait()  # Frequency 440 Hz, for 1.5 seconds
 
     # time.sleep(1)
     # print("Playing several notes:")
