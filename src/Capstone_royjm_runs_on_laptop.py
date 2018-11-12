@@ -49,17 +49,24 @@ def main():
 
 def setup_gui(root_window, mqtt_client):
     """ Constructs and sets up widgets on the given window. """
-    frame = ttk.Frame(root_window, padding=10)
+    frame = ttk.Frame(root_window, padding=35, relief='groove')
     frame.grid()
 
     speed_entry_box = ttk.Entry(frame)
     go_forward_button = ttk.Button(frame, text="Go forward")
+    follow_path_button = ttk.Button(frame, text='follow path')
+    progress_bar = ttk.Progressbar(frame, length=200)
 
     speed_entry_box.grid()
     go_forward_button.grid()
+    follow_path_button.grid()
+    progress_bar.grid()
 
     go_forward_button['command'] = \
         lambda: handle_go_forward(speed_entry_box, mqtt_client)
+
+    follow_path_button['command'] = \
+        lambda: handle_follow_path(mqtt_client)
 
 
 def handle_go_forward(entry_box, mqtt_client):
@@ -70,6 +77,14 @@ def handle_go_forward(entry_box, mqtt_client):
     print('sending the go_forward message with speed', speed_string)
     mqtt_client.send_message('go_forward', [speed_string])
     # --------------------------------------------------------------------------
+
+
+def handle_follow_path(mqtt_client):
+    """
+    tells the robot to follow the path with colors along it
+    """
+    print('sending the follow path message')
+    mqtt_client.send_message('follow_path')
 
 
 main()
