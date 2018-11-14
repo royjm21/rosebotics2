@@ -54,7 +54,9 @@ def main():
     scales = ScalesEtc(robot)
     mqtt_client = com.MqttClient(scales)
     mqtt_client.connect_to_pc()
+    scales.mqtt_client = mqtt_client
     print('connected to pc!')
+    # how do i get the value that I chose to send to the robot back to the robot?
 
     # --------------------------------------------------------------------------
     # TODO: 5. Add a class for your "delegate" object that will handle messages
@@ -105,26 +107,104 @@ class ScalesEtc(object):
             :type robot: rb.Snatch3rRobot
         """
         self.robot = robot
+        self.stop_tone = False
+        self.stop_moving_action = False
+        self.mqtt_client = None
         self.a_major_scale = [[880.00, 1500], [987.77, 1500], [1108.73, 1500], [1174.66, 1500], [1318.51, 1500],
                               [1479.98, 1500], [1661.22, 1500], [1760.00, 1500], [1760.00, 1500], [1661.22, 1500],
                               [1479.98, 1500], [1318.51, 1500], [1174.66, 1500], [1108.73, 1500], [987.77, 1500],
                               [880.00, 1500]]
 
-    def play_scales(self, type_of_scale, robot):
+    def convert_to_freq(self, type_of_scale):
+        if type_of_scale == 'A':
+            print('type of starting note or default note:', type_of_scale)
+            type_of_scale = 440
+        elif type_of_scale == 'B':
+            print('type of starting note or default note:', type_of_scale)
+            type_of_scale = 493
+        elif type_of_scale == 'C':
+            print('type of starting note or default note:', type_of_scale)
+            type_of_scale = 523
+        elif type_of_scale == 'D':
+            print('type of starting note or default note:', type_of_scale)
+            type_of_scale = 587
+        elif type_of_scale == 'E':
+            print('type of starting note or default note:', type_of_scale)
+            type_of_scale = 659
+        elif type_of_scale == 'F':
+            print('type of starting note or default note:', type_of_scale)
+            type_of_scale = 698
+        elif type_of_scale == 'G':
+            print('type of starting note or default note:', type_of_scale)
+            type_of_scale = 783
+        else:
+            type_of_scale = 440
+        self.mqtt_client.send_message('receive_notes', [type_of_scale])
+        return type_of_scale
+
+    def play_scales(self, type_of_scale):
+        """
+            :type robot: rb.Snatch3rRobot
+            :type type_of_scale: str \ int
+        """
+        type_of_scale = self.convert_to_freq(type_of_scale)
         print('telling the robot to play this dope scale:', type_of_scale)
-        if type_of_scale == 'A':  # A major scale
-            ev3.Sound.tone(self.a_major_scale)
+        # if type_of_scale == 'A':  # A major scale
+        #     ev3.Sound.tone(self.a_major_scale)
+        # if robot.camera.get_biggest_blob().get_area() >= 1000:
+        #     robot.drive_system.turn_degrees(10)
+        # robot.drive_system.stop_moving()
+        # starting_note = type_of_scale
+
+        x_coordinate = self.robot.camera.get_biggest_blob().center.x / 23
+
+        frequency_in_hz = (2 ** (x_coordinate / 12)) * type_of_scale  # 440 is A4's frequency
+        print('frequency input', frequency_in_hz)
+
+        # y_coordinate = self.robot.camera.get_biggest_blob().center.y / 2
+        # print('Getting x coordinate:', x_coordinate)
+        # print('Getting y coordinate:', y_coordinate)
+        # volume_of_hz = ev3.Sound.set_volume(y_coordinate)
+        # print('volume of hz:', volume_of_hz)
+
+        ev3.Sound.tone(frequency_in_hz, 1000).wait()
+        self.mqtt_client.send_message('receive_notes', [type_of_scale])
+        time.sleep(1)
+        if self.stop_tone is False:
+            self.play_scales(type_of_scale)
+
+    def stop_playing_command(self):
+        print('Telling to stop')
+        self.stop_tone = True
+
+    def stop_moving(self):
+        print('Telling robot to stop moving')
+        if self.stop_moving_action is True:
+            self.robot.drive_system.stop_moving()
+
+    def area_scales(self, type_of_scale):
+        type_of_scale = self.convert_to_freq(type_of_scale)
+        print('Commencing are dependent scales with type of scale:', type_of_scale)
+        area_argument = 1000
         while True:
-            x_coordinate = robot.camera.get_biggest_blob().center.x / 23
-            y_coordinate = robot.camera.get_biggest_blob().center.y / 2
-            print('Getting x coordinate:', x_coordinate)
-            print('Getting y coordinate:', y_coordinate)
-            frequency_in_hz = (2 ** (x_coordinate / 12)) * 440  # 440 is A4's frequency
-            volume_of_hz = ev3.Sound.set_volume(y_coordinate)
-            print('frequency input', frequency_in_hz)
-            print('volume of hz:', volume_of_hz)
-            ev3.Sound.tone(frequency_in_hz, 1000).wait()
-            time.sleep(0.5)
+            length_away_by_area = self.robot.camera.get_biggest_blob().get_area()
+            print('the length by area:', length_away_by_area)
+            frequency_in_hz = (2 ** (length_away_by_area / area_argument)) * type_of_scale
+            print('area argument is:', area_argument)
+            if length_away_by_area <= area_argument:
+                print('area is:', length_away_by_area)
+                print('Robot moving 3 inches')
+                self.robot.drive_system.go_straight_inches(3)
+                ev3.Sound.tone(frequency_in_hz, 1500).wait()
+                print('Frequency instructed to play:', frequency_in_hz)
+                time.sleep(1)
+                area_argument -= 10
+                print('Area argument is now:', area_argument)
+            else:
+                print('breaking')
+                break
+        # if self.stop_moving_action is False:
+        #     self.area_scales(type_of_scale)
 
 
 main()
