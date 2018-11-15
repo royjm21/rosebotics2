@@ -56,17 +56,22 @@ def setup_gui(root_window, mqtt_client):
     go_forward_button = ttk.Button(frame, text="Go forward")
     follow_path_button = ttk.Button(frame, text='follow path')
     progress_bar = ttk.Progressbar(frame, length=200)
+    path_by_color_button = ttk.Button(frame, text='path by color')
 
     speed_entry_box.grid()
     go_forward_button.grid()
     follow_path_button.grid()
     progress_bar.grid()
+    path_by_color_button.grid()
 
     go_forward_button['command'] = \
         lambda: handle_go_forward(speed_entry_box, mqtt_client)
 
     follow_path_button['command'] = \
         lambda: handle_follow_path(mqtt_client)
+
+    path_by_color_button['command'] = \
+        lambda: handle_path_by_color(mqtt_client)
 
 
 def handle_go_forward(entry_box, mqtt_client):
@@ -85,6 +90,16 @@ def handle_follow_path(mqtt_client):
     """
     print('sending the follow path message')
     mqtt_client.send_message('follow_path')
+
+
+def handle_path_by_color(mqtt_client):
+    print('sending the path by color message')
+    mqtt_client.send_message('path_by_color')
+
+
+class ReceiveMessages():
+    def __init__(self):
+        pass
 
 
 main()

@@ -240,13 +240,16 @@ class DriveSystem(object):
         # TODO:   Assume that the conversion is linear with respect to speed.
         # TODO: Don't forget that the Wheel object's position begins wherever
         # TODO:   it last was, not necessarily 0.
-        degree_multiplier = 6.06
+        degrees_to_robot_degrees = 5.09
         self.left_wheel.reset_degrees_spun()
         self.left_wheel.start_spinning(duty_cycle_percent)
         self.right_wheel.start_spinning(duty_cycle_percent * -1)
-        if self.left_wheel.get_degrees_spun() >= degrees*degree_multiplier:
-            self.left_wheel.stop_spinning(stop_action)
-            self.right_wheel.stop_spinning(stop_action)
+        robot_degrees = degrees * degrees_to_robot_degrees
+        while True:
+            if self.left_wheel.get_degrees_spun() >= robot_degrees:
+                self.left_wheel.stop_spinning(stop_action)
+                self.right_wheel.stop_spinning(stop_action)
+                break
 
     def turn_degrees(self,
                      degrees,
@@ -268,11 +271,10 @@ class DriveSystem(object):
         # TODO:   it last was, not necessarily 0.
         self.right_wheel.reset_degrees_spun()
         self.right_wheel.start_spinning(duty_cycle_percent)
-        degree_conversion = 12.78
+        robot_degrees = degrees * 12.777
         while True:
-            if self.right_wheel.get_degrees_spun() >= degrees*degree_conversion:
+            if self.right_wheel.get_degrees_spun() >= robot_degrees:
                 self.right_wheel.stop_spinning(stop_action)
-                self.right_wheel.reset_degrees_spun()
                 break
 
     def polygon(self, sides, length):

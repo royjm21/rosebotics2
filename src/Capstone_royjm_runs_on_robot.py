@@ -10,7 +10,6 @@ It uses MQTT to RECEIVE information from a program running on the LAPTOP.
 Authors:  David Mutchler, his colleagues, and Jeremy Roy.
 """
 
-
 import rosebotics_new as rb
 import time
 import mqtt_remote_method_calls as com
@@ -51,9 +50,24 @@ class RemoteControlEtc(object):
             x = self.robot.color_sensor.get_reflected_intensity()  # 100 in intensity is white, 1 through 4 is black
             print(x)
             if x <= 10:
-                self.robot.drive_system.start_moving(left_wheel_duty_cycle_percent=45, right_wheel_duty_cycle_percent=45)
+                self.robot.drive_system.start_moving(left_wheel_duty_cycle_percent=45,
+                                                     right_wheel_duty_cycle_percent=45)
             if x >= 10:  # go counterclockwise in this case
                 self.robot.drive_system.start_moving(left_wheel_duty_cycle_percent=0, right_wheel_duty_cycle_percent=50)
+
+    def path_by_color(self):
+        x = self.robot.color_sensor.get_reflected_intensity()
+        if x >= 20 and x <= 25:
+            ev3.Sound.speak('I found blue!')
+            self.robot.drive_system.spin_in_place_degrees(360)
+
+        if x >= 74 and x <= 80:
+            ev3.Sound.speak('I found red!')
+            self.robot.drive_system.spin_in_place_degrees(720)
+
+        if x >= 15 and x <= 19:
+            ev3.Sound.speak('I found green!')
+            self.robot.drive_system.spin_in_place_degrees(180)
 
 
 main()
