@@ -38,11 +38,12 @@ import mqtt_remote_method_calls as com
 def main():
     """ Constructs and runs a GUI for this program. """
     root = tkinter.Tk()
-
-    mqtt_client = com.MqttClient()
+    delegate = ReceiveMessages()
+    mqtt_client = com.MqttClient(delegate)
     mqtt_client.connect_to_ev3()
 
-    setup_gui(root, mqtt_client)
+    progress_bar = setup_gui(root, mqtt_client)
+    delegate.progress_bar = progress_bar
 
     root.mainloop()
 
@@ -57,12 +58,14 @@ def setup_gui(root_window, mqtt_client):
     follow_path_button = ttk.Button(frame, text='follow path')
     progress_bar = ttk.Progressbar(frame, length=200)
     path_by_color_button = ttk.Button(frame, text='path by color')
+    find_nearest_object_button = ttk.Button(frame, text='find nearest object')
 
+    progress_bar.grid()
     speed_entry_box.grid()
     go_forward_button.grid()
     follow_path_button.grid()
-    progress_bar.grid()
     path_by_color_button.grid()
+    find_nearest_object_button.grid()
 
     go_forward_button['command'] = \
         lambda: handle_go_forward(speed_entry_box, mqtt_client)
@@ -72,6 +75,11 @@ def setup_gui(root_window, mqtt_client):
 
     path_by_color_button['command'] = \
         lambda: handle_path_by_color(mqtt_client)
+
+    find_nearest_object_button['command'] = \
+        lambda: handle_find_nearest(mqtt_client)
+
+    return progress_bar
 
 
 def handle_go_forward(entry_box, mqtt_client):
@@ -97,9 +105,18 @@ def handle_path_by_color(mqtt_client):
     mqtt_client.send_message('path_by_color')
 
 
-class ReceiveMessages():
+def handle_find_nearest(mqtt_client):
+    print('sending find nearest object message')
+    mqtt_client.send_message('find_nearest_object')
+
+
+class ReceiveMessages(object):
     def __init__(self):
-        pass
+        self.progress_bar = None
+
+    def handle_increment_progress_bar(self):
+        # print('hello') # 'for testing purposes'
+        self.progress_bar.step(amount=20)
 
 
 main()

@@ -247,8 +247,8 @@ class DriveSystem(object):
         robot_degrees = degrees * degrees_to_robot_degrees
         while True:
             if self.left_wheel.get_degrees_spun() >= robot_degrees:
-                self.left_wheel.stop_spinning(stop_action)
-                self.right_wheel.stop_spinning(stop_action)
+                self.left_wheel.stop_spinning()
+                self.right_wheel.stop_spinning()
                 break
 
     def turn_degrees(self,

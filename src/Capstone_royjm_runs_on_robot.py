@@ -21,6 +21,7 @@ def main():
 
     rc = RemoteControlEtc(robot)
     mqtt_client = com.MqttClient(rc)
+    rc.mqtt_client = mqtt_client
     mqtt_client.connect_to_pc()
 
     while True:
@@ -38,6 +39,7 @@ class RemoteControlEtc(object):
         :type   robot: rb.Snatch3rRobot
         """
         self.robot = robot
+        self.mqtt_client = None
 
     def go_forward(self, speed_string):
         """makes the robot go forward at the given speed"""""
@@ -55,8 +57,66 @@ class RemoteControlEtc(object):
             if x >= 10:  # go counterclockwise in this case
                 self.robot.drive_system.start_moving(left_wheel_duty_cycle_percent=0, right_wheel_duty_cycle_percent=50)
 
+            if x >= 20 and x <= 25:
+                self.robot.drive_system.stop_moving()
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(1.5)
+                ev3.Sound.beep()
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(1.5)
+                ev3.Sound.speak('I found blue!')
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(1.5)
+                ev3.Sound.beep()
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(1.5)
+                self.robot.drive_system.spin_in_place_degrees(360)
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(3)
+                break
+
+            if x >= 74 and x <= 80:
+                self.robot.drive_system.stop_moving()
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(1.5)
+                ev3.Sound.beep()
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(1.5)
+                ev3.Sound.speak('I found red!')
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(1.5)
+                ev3.Sound.beep()
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(1.5)
+                self.robot.drive_system.spin_in_place_degrees(720)
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(3)
+                break
+
+            if x >= 15 and x <= 19:
+                self.robot.drive_system.stop_moving()
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(1.5)
+                ev3.Sound.beep()
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(1.5)
+                ev3.Sound.speak('I found green!')
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(1.5)
+                ev3.Sound.beep()
+                self.robot.drive_system.spin_in_place_degrees(180)
+                self.mqtt_client.send_message('handle_increment_progress_bar')
+                time.sleep(3)
+                break
+
+            if self.robot.proximity_sensor.get_distance_to_nearest_object_in_inches() <= 4:
+                ev3.Sound.beep()
+                ev3.Sound.speak('There is something in my way!')
+                ev3.Sound.beep()
+
     def path_by_color(self):
         x = self.robot.color_sensor.get_reflected_intensity()
+
         if x >= 20 and x <= 25:
             ev3.Sound.speak('I found blue!')
             self.robot.drive_system.spin_in_place_degrees(360)
